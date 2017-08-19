@@ -1,0 +1,15 @@
+content     sqlitemanager chrome/content/
+skin        sqlitemanager default chrome/skin/default/
+locale      sqlitemanager en-US   chrome/locale/en-US/
+resource    sqlitemanager chrome/resource/
+
+#overrides
+style chrome://sqlitemanager/content/sqlitemanager.xul chrome://sqlitemanager/skin/darwin/sqlitemanager.css os=darwin
+
+locale sqlitemanager de chrome/locale/de/
+locale sqlitemanager es-ES chrome/locale/es-ES/
+locale sqlitemanager fr chrome/locale/fr/
+locale sqlitemanager it chrome/locale/it/
+locale sqlitemanager ja chrome/locale/ja/
+locale sqlitemanager ru chrome/locale/ru/
+locale sqlitemanager sv-SE chrome/locale/sv-SE/
