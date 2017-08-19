@@ -5,7 +5,7 @@ BUILD_DIR=$REPO_DIR/build      # Directory where we can work
 SOURCE_DIR=$BUILD_DIR/source   # Destination for the firefox code
 INSTALL_DIR=$BUILD_DIR/install # Destination for the built firefox
 FIREFOX_VERSION=54.0.1
-MOZCONFIG_PATH=$REPO_DIR/mozconfig
+MOZCONFIG_PATH=$REPO_DIR/config/mozconfig
 
 
 # DOWNLOAD SOURCE CODE
@@ -64,7 +64,7 @@ unset FILE
 # The temporary install directory will be explained in the next step.
 
 TMP_INSTALL_DIR=$BUILD_DIR/tmp-install
-cp $MOZCONFIG_PATH .
+cp $MOZCONFIG_PATH mozconfig
 ./mach configure --prefix=$TMP_INSTALL_DIR
 ./mach build
 
