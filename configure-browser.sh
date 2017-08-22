@@ -48,6 +48,7 @@ cp -r $INSTALL_DIR/browser/chrome/icons/* $DEST_DIR/icons
 
 sed -i 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "xxx";/' $DEST_DIR/chrome/resource/appInfo.js
 
-# Copy the launcher.
+# Copy the launcher files.
 
 cp $EXT_DIR/linux-launcher.sh $INSTALL_DIR/sqlite-composer
+cp $EXT_DIR/linux-launcher.desktop $INSTALL_DIR/sqlite-composer.desktop

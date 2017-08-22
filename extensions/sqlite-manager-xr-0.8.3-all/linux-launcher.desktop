@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=SQLite Composer
+Exec=bash -c "$(dirname $(readlink -f %k))/sqlite-composer"
+Icon=
+Type=Application
+Terminal=false
