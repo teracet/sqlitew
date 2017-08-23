@@ -1,23 +1,23 @@
 #!/bin/bash
 
 REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BUILD_DIR=$REPO_DIR/build      # Directory where we can work
-SOURCE_DIR=$BUILD_DIR/source   # Destination for the firefox code
-INSTALL_DIR=$BUILD_DIR/install # Destination for the built firefox
+BUILD_DIR="$REPO_DIR/build"      # Directory where we can work
+SOURCE_DIR="$BUILD_DIR/source"   # Destination for the firefox code
+INSTALL_DIR="$BUILD_DIR/install" # Destination for the built firefox
 FIREFOX_VERSION=54.0.1
-MOZCONFIG_PATH=$REPO_DIR/config/mozconfig
+MOZCONFIG_PATH="$REPO_DIR/config/mozconfig"
 
 
 # DOWNLOAD SOURCE CODE
 
-DOWNLOAD_URL=https://archive.mozilla.org/pub/firefox/releases/$FIREFOX_VERSION/source/firefox-$FIREFOX_VERSION.source.tar.xz
+DOWNLOAD_URL="https://archive.mozilla.org/pub/firefox/releases/$FIREFOX_VERSION/source/firefox-$FIREFOX_VERSION.source.tar.xz"
 FILE=firefox-source.tar.xz
-rm -rf $BUILD_DIR && mkdir -p $BUILD_DIR
-rm -rf $SOURCE_DIR && mkdir -p $SOURCE_DIR
-cd $BUILD_DIR
-wget -O $FILE $DOWNLOAD_URL
-tar -xf $FILE --directory $SOURCE_DIR --strip-components=1
-rm $FILE
+rm -rf "$BUILD_DIR" && mkdir -p "$BUILD_DIR"
+rm -rf "$SOURCE_DIR" && mkdir -p "$SOURCE_DIR"
+cd "$BUILD_DIR"
+wget -O "$FILE" "$DOWNLOAD_URL"
+tar -xf "$FILE" --directory "$SOURCE_DIR" --strip-components=1
+rm "$FILE"
 unset DOWNLOAD_URL
 unset FILE
 
@@ -33,7 +33,7 @@ unset FILE
 #   Response #2: '3' - Do not install Mercurial
 #   Response #3: '1' - Create a build directory (this needs more explanation)
 
-cd $SOURCE_DIR
+cd "$SOURCE_DIR"
 printf "2\n3\n1\n" | ./mach bootstrap
 
 
@@ -63,9 +63,9 @@ unset FILE
 
 # The temporary install directory will be explained in the next step.
 
-TMP_INSTALL_DIR=$BUILD_DIR/tmp-install
-cp $MOZCONFIG_PATH mozconfig
-./mach configure --prefix=$TMP_INSTALL_DIR
+TMP_INSTALL_DIR="$BUILD_DIR/tmp-install"
+cp "$MOZCONFIG_PATH" mozconfig
+./mach configure --prefix="$TMP_INSTALL_DIR"
 ./mach build
 
 
@@ -77,9 +77,9 @@ cp $MOZCONFIG_PATH mozconfig
 # the build to install into a temporary directory instead, where we can then
 # take the necessary files.
 
-mkdir -p $TMP_INSTALL_DIR
+mkdir -p "$TMP_INSTALL_DIR"
 ./mach install
-rm -rf $INSTALL_DIR && mkdir -p $INSTALL_DIR
-mv $TMP_INSTALL_DIR/lib/firefox-$FIREFOX_VERSION/* $INSTALL_DIR
-rm -rf $TMP_INSTALL_DIR
+rm -rf "$INSTALL_DIR" && mkdir -p "$INSTALL_DIR"
+mv "$TMP_INSTALL_DIR/lib/firefox-$FIREFOX_VERSION/"* "$INSTALL_DIR"
+rm -rf "$TMP_INSTALL_DIR"
 unset TMP_INSTALL_DIR
