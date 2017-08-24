@@ -53,8 +53,11 @@ cp "$EXT_DIR/icons/icon_128x128.png" "$APP_DIR/icons/mozicon128.png"
 
 # Since we are not "properly" installing the extension, there is an unexpected
 # exception that gets thrown; let's patch that.
+# We use "0.8.3" as the default version since that's the version that is saved
+# in the repo; if we upgrade SQLite Manager, we should update this number as
+# well.
 
-sed -i 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "xxx";/' "$APP_DIR/chrome/resource/appInfo.js"
+sed -i 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "0.8.3";/' "$APP_DIR/chrome/resource/appInfo.js"
 
 # Copy the launcher files.
 
