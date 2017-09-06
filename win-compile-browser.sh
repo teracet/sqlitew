@@ -78,6 +78,15 @@ sed -i 's/Mozilla\\Firefox/Mozilla\\${AppName}/'             "$INSTALLER_DIR/uni
 unset INSTALLER_DIR
 
 
+# PATCH: INSTALLER
+
+# This patch is to ensure our "apps/sqlite-manager" directory is included in
+# the generated installer.
+
+echo '[sqlite-composer]' >> "$SOURCE_DIR/browser/installer/package-manifest.in"
+echo '@BINPATH@/apps/*' >> "$SOURCE_DIR/browser/installer/package-manifest.in"
+
+
 # CONFIGURE & BUILD
 
 cp "$MOZCONFIG_PATH" mozconfig
