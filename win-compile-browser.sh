@@ -6,6 +6,7 @@ SOURCE_DIR="$BUILD_DIR/source"   # Destination for the firefox code
 INSTALL_DIR="$BUILD_DIR/install" # Destination for the built firefox
 FIREFOX_VERSION=54.0.1
 MOZCONFIG_PATH="$REPO_DIR/config/mozconfig"
+NSIS_DIR="$SOURCE_DIR/browser/installer/windows/nsis"
 
 
 # DOWNLOAD SOURCE CODE
@@ -67,15 +68,12 @@ sed -i 's/Nightly/"SQLite Composer"/'                     "$BRANDING_DIR/configu
 echo 'MOZ_APP_NAME="sqlite-composer"' >>                  "$BRANDING_DIR/configure.sh"
 
 unset BRANDING_DIR
-INSTALLER_DIR="$SOURCE_DIR/browser/installer/windows/nsis"
 
-sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$INSTALLER_DIR/../app.tag"
-sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$INSTALLER_DIR/defines.nsi.in"
-sed -i 's/Firefox/SQLite Composer/'                          "$INSTALLER_DIR/defines.nsi.in"
-sed -i 's/\\Firefox/\\${AppName}/'                           "$INSTALLER_DIR/installer.nsi"
-sed -i 's/Mozilla\\Firefox/Mozilla\\${AppName}/'             "$INSTALLER_DIR/uninstaller.nsi"
-
-unset INSTALLER_DIR
+sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$NSIS_DIR/../app.tag"
+sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$NSIS_DIR/defines.nsi.in"
+sed -i 's/Firefox/SQLite Composer/'                          "$NSIS_DIR/defines.nsi.in"
+sed -i 's/\Firefox/\${AppName}/'                             "$NSIS_DIR/installer.nsi"
+sed -i 's/Mozilla\Firefox/Mozilla\${AppName}/'               "$NSIS_DIR/uninstaller.nsi"
 
 
 # PATCH: INSTALLER
@@ -85,6 +83,27 @@ unset INSTALLER_DIR
 
 echo '[sqlite-composer]' >> "$SOURCE_DIR/browser/installer/package-manifest.in"
 echo '@BINPATH@/apps/*' >> "$SOURCE_DIR/browser/installer/package-manifest.in"
+
+# This patch adds a new shortcut within the installation directory so the user
+# can start the application from there if necessary.
+
+FILE="$NSIS_DIR/installer.nsi"
+TMP_FILE="$NSIS_DIR/new-installer.nsi"
+INSERT_BEFORE_LINE=$(grep -nF '${If} $AddDesktopSC == 1' "$FILE" | cut -d ':' -f 1)
+
+{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
+mv "$TMP_FILE" "$FILE"
+
+unset FILE
+unset TMP_FILE
+unset INSERT_BEFORE_LINE
+
+# This patches the various shortcuts that are created by the installer, since
+# the browser-bin needs to be executed with particular arugments.
+
+SC_PARAMS='"--app `\$INSTDIR\\apps\\sqlite-manager\\application.ini` --no-remote --profile `\$INSTDIR\\profiles\\sqlite-composer`"'
+sed -i "/CreateShortCut/ s/\$/ $SC_PARAMS/" "$NSIS_DIR/installer.nsi"
+unset SC_PARAMS
 
 
 # CONFIGURE & BUILD
