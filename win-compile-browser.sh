@@ -72,9 +72,17 @@ echo 'APP_VERSION="0.0.1"'                             >> "$BRANDING_DIR/configu
 sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$NSIS_DIR/../app.tag"
 sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$NSIS_DIR/defines.nsi.in"
 sed -i 's/Firefox/SQLite Composer/'                          "$NSIS_DIR/defines.nsi.in"
-sed -i 's/@MOZ_APP_NAME@\.exe/@MOZ_APP_NAME@-bin\.exe/'      "$NSIS_DIR/defines.nsi.in"
 sed -i 's/\\Firefox/\\\${AppName}/'                          "$NSIS_DIR/installer.nsi"
-sed -i 's/Mozilla\\Firefox/Mozilla\\\${AppName}/'            "$NSIS_DIR/uninstaller.nsi"
+sed -i 's/Mozilla\\/Teracet\\/'                              "$NSIS_DIR/installer.nsi"
+sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/installer.nsi"
+sed -i 's/mozilla\.org/teracet\.com/'                        "$NSIS_DIR/installer.nsi"
+sed -i '/Publisher/ s/Mozilla/Teracet/'                      "$NSIS_DIR/shared.nsh"
+sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/shared.nsh"
+sed -i 's/\\mozilla\.org/\\teracet\.com/'                    "$NSIS_DIR/shared.nsh"
+sed -i 's/Mozilla\\Firefox/Teracet\\\${AppName}/'            "$NSIS_DIR/uninstaller.nsi"
+sed -i 's/Mozilla\\/Teracet\\/'                              "$NSIS_DIR/uninstaller.nsi"
+sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/uninstaller.nsi"
+sed -i 's/\\Mozilla/\\Teracet/'                              "$SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
 
 cp "$ICON_DIR/win/icon.ico" "$BRANDING_DIR/firefox.ico"
 
@@ -127,7 +135,7 @@ unset SC_PARAMS
 # launch the executable with our arugments.
 
 OLD_LAUNCH='Exec "\$\\"$INSTDIR\\\${FileMainEXE}\$\\""'   # Exec "$\"$INSTDIR\${FileMainEXE}$\""
-NEW_LAUNCH='ExecShell "\$INSTDIR\\\${BrandFullName}.lnk"' # ExecShell "$INSTDIR\${BrandFullName}.lnk"
+NEW_LAUNCH='ExecShell "" "\$INSTDIR\\\${BrandFullName}.lnk"' # ExecShell "$INSTDIR\${BrandFullName}.lnk"
 sed -i "s/$OLD_LAUNCH/$NEW_LAUNCH/" "$NSIS_DIR/installer.nsi"
 unset OLD_LAUNCH
 unset NEW_LAUNCH
