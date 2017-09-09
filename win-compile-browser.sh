@@ -117,7 +117,20 @@ FILE="$NSIS_DIR/installer.nsi"
 TMP_FILE="$NSIS_DIR/new-installer.nsi"
 INSERT_BEFORE_LINE=$(grep -nF '${If} $AddDesktopSC == 1' "$FILE" | cut -d ':' -f 1)
 
-{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
+{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-create-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
+mv "$TMP_FILE" "$FILE"
+
+unset FILE
+unset TMP_FILE
+unset INSERT_BEFORE_LINE
+
+# Ensure that the new shortcut we just created gets deleted by the uninstaller.
+
+FILE="$NSIS_DIR/uninstaller.nsi"
+TMP_FILE="$NSIS_DIR/new-uninstaller.nsi"
+INSERT_BEFORE_LINE=$(grep -nF -m 1 '${un.DeleteShortcuts}' "$FILE" | cut -d ':' -f 1)
+
+{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-delete-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
 mv "$TMP_FILE" "$FILE"
 
 unset FILE

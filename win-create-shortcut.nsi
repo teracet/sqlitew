@@ -14,4 +14,3 @@
     ${LogMsg} "** ERROR Adding Shortcut: $INSTDIR\${BrandFullName}.lnk"
   ${EndIf}
   ;; The following newline is important; do not delete
-  
