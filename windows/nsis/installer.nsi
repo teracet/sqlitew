@@ -1,11 +1,11 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# file, You can obtain one at http://teracet.com/MPL/2.0/.
 
 # Required Plugins:
 # AppAssocReg    http://nsis.sourceforge.net/Application_Association_Registration_plug-in
 # ApplicationID  http://nsis.sourceforge.net/ApplicationID_plug-in
-# CityHash       http://dxr.mozilla.org/mozilla-central/source/other-licenses/nsis/Contrib/CityHash
+# CityHash       http://dxr.teracet.com/mozilla-central/source/other-licenses/nsis/Contrib/CityHash
 # ShellLink      http://nsis.sourceforge.net/ShellLink_plug-in
 # UAC            http://nsis.sourceforge.net/UAC_plug-in
 # ServicesHelper Mozilla specific plugin that is located in /other-licenses/nsis
@@ -246,10 +246,10 @@ Section "-InstallStartCleanup"
   ${EndIf}
 
   ; setup the application model id registration value
-  ${InitHashAppModelId} "$INSTDIR" "Software\Mozilla\${AppName}\TaskBarIDs"
+  ${InitHashAppModelId} "$INSTDIR" "Software\Teracet\${AppName}\TaskBarIDs"
 
   ; Remove the updates directory
-  ${CleanUpdateDirectories} "Mozilla\Firefox" "Mozilla\updates"
+  ${CleanUpdateDirectories} "Teracet\${AppName}" "Teracet\updates"
 
   ${RemoveDeprecatedFiles}
   ${RemovePrecompleteEntries} "false"
@@ -330,25 +330,25 @@ Section "-Application" APP_IDX
 
   ${LogHeader} "Adding Registry Entries"
   SetShellVarContext current  ; Set SHCTX to HKCU
-  ${RegCleanMain} "Software\Mozilla"
+  ${RegCleanMain} "Software\Teracet"
   ${RegCleanUninstall}
   ${UpdateProtocolHandlers}
 
   ClearErrors
-  WriteRegStr HKLM "Software\Mozilla" "${BrandShortName}InstallerTest" "Write Test"
+  WriteRegStr HKLM "Software\Teracet" "${BrandShortName}InstallerTest" "Write Test"
   ${If} ${Errors}
     StrCpy $TmpVal "HKCU" ; used primarily for logging
   ${Else}
     SetShellVarContext all  ; Set SHCTX to HKLM
-    DeleteRegValue HKLM "Software\Mozilla" "${BrandShortName}InstallerTest"
+    DeleteRegValue HKLM "Software\Teracet" "${BrandShortName}InstallerTest"
     StrCpy $TmpVal "HKLM" ; used primarily for logging
-    ${RegCleanMain} "Software\Mozilla"
+    ${RegCleanMain} "Software\Teracet"
     ${RegCleanUninstall}
     ${UpdateProtocolHandlers}
 
-    ReadRegStr $0 HKLM "Software\mozilla.org\Mozilla" "CurrentVersion"
+    ReadRegStr $0 HKLM "Software\teracet.com\Teracet" "CurrentVersion"
     ${If} "$0" != "${GREVersion}"
-      WriteRegStr HKLM "Software\mozilla.org\Mozilla" "CurrentVersion" "${GREVersion}"
+      WriteRegStr HKLM "Software\teracet.com\Teracet" "CurrentVersion" "${GREVersion}"
     ${EndIf}
   ${EndIf}
 
@@ -580,7 +580,7 @@ Section "-InstallEndCleanup"
       ; If we have something other than empty string now, write the value.
       ${If} "$0" != ""
         ClearErrors
-        WriteRegStr HKCU "Software\Mozilla\Firefox" "OldDefaultBrowserCommand" "$0"
+        WriteRegStr HKCU "Software\Teracet\${AppName}" "OldDefaultBrowserCommand" "$0"
       ${EndIf}
 
       ${LogHeader} "Setting as the default browser"
@@ -596,7 +596,7 @@ Section "-InstallEndCleanup"
     ${ElseIfNot} ${Errors}
       ${LogHeader} "Writing default-browser opt-out"
       ClearErrors
-      WriteRegStr HKCU "Software\Mozilla\Firefox" "DefaultBrowserOptOut" "True"
+      WriteRegStr HKCU "Software\Teracet\${AppName}" "DefaultBrowserOptOut" "True"
       ${If} ${Errors}
         ${LogMsg} "Error writing default-browser opt-out"
       ${EndIf}
@@ -905,7 +905,7 @@ FunctionEnd
 !ifdef MOZ_MAINTENANCE_SERVICE
 Function preComponents
   ; If the service already exists, don't show this page
-  ServicesHelper::IsInstalled "MozillaMaintenance"
+  ServicesHelper::IsInstalled "TeracetMaintenance"
   Pop $R9
   ${If} $R9 == 1
     ; The service already exists so don't show this page.
@@ -922,13 +922,13 @@ Function preComponents
 
   ; Only show the maintenance service page if we have write access to HKLM
   ClearErrors
-  WriteRegStr HKLM "Software\Mozilla" \
+  WriteRegStr HKLM "Software\Teracet" \
               "${BrandShortName}InstallerTest" "Write Test"
   ${If} ${Errors}
     ClearErrors
     Abort
   ${Else}
-    DeleteRegValue HKLM "Software\Mozilla" "${BrandShortName}InstallerTest"
+    DeleteRegValue HKLM "Software\Teracet" "${BrandShortName}InstallerTest"
   ${EndIf}
 
   StrCpy $PageName "Components"
@@ -994,9 +994,9 @@ Function preSummary
 
   ; Check if it is possible to write to HKLM
   ClearErrors
-  WriteRegStr HKLM "Software\Mozilla" "${BrandShortName}InstallerTest" "Write Test"
+  WriteRegStr HKLM "Software\Teracet" "${BrandShortName}InstallerTest" "Write Test"
   ${Unless} ${Errors}
-    DeleteRegValue HKLM "Software\Mozilla" "${BrandShortName}InstallerTest"
+    DeleteRegValue HKLM "Software\Teracet" "${BrandShortName}InstallerTest"
     ; Check if Firefox is the http handler for this user.
     SetShellVarContext current ; Set SHCTX to the current user
     ${IsHandlerForInstallDir} "http" $R9

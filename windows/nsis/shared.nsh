@@ -27,28 +27,28 @@
   ${CreateShortcutsLog}
 
   ; Remove registry entries for non-existent apps and for apps that point to our
-  ; install location in the Software\Mozilla key and uninstall registry entries
+  ; install location in the Software\Teracet key and uninstall registry entries
   ; that point to our install location for both HKCU and HKLM.
   SetShellVarContext current  ; Set SHCTX to the current user (e.g. HKCU)
-  ${RegCleanMain} "Software\Mozilla"
+  ${RegCleanMain} "Software\Teracet"
   ${RegCleanUninstall}
   ${UpdateProtocolHandlers}
 
   ; setup the application model id registration value
-  ${InitHashAppModelId} "$INSTDIR" "Software\Mozilla\${AppName}\TaskBarIDs"
+  ${InitHashAppModelId} "$INSTDIR" "Software\Teracet\${AppName}\TaskBarIDs"
 
   ; Win7 taskbar and start menu link maintenance
   Call FixShortcutAppModelIDs
 
   ClearErrors
-  WriteRegStr HKLM "Software\Mozilla" "${BrandShortName}InstallerTest" "Write Test"
+  WriteRegStr HKLM "Software\Teracet" "${BrandShortName}InstallerTest" "Write Test"
   ${If} ${Errors}
     StrCpy $TmpVal "HKCU" ; used primarily for logging
   ${Else}
     SetShellVarContext all    ; Set SHCTX to all users (e.g. HKLM)
-    DeleteRegValue HKLM "Software\Mozilla" "${BrandShortName}InstallerTest"
+    DeleteRegValue HKLM "Software\Teracet" "${BrandShortName}InstallerTest"
     StrCpy $TmpVal "HKLM" ; used primarily for logging
-    ${RegCleanMain} "Software\Mozilla"
+    ${RegCleanMain} "Software\Teracet"
     ${RegCleanUninstall}
     ${UpdateProtocolHandlers}
     ${FixShellIconHandler} "HKLM"
@@ -60,9 +60,9 @@
     ; Add the Firewall entries after an update
     Call AddFirewallEntries
 
-    ReadRegStr $0 HKLM "Software\mozilla.org\Mozilla" "CurrentVersion"
+    ReadRegStr $0 HKLM "Software\teracet.com\Teracet" "CurrentVersion"
     ${If} "$0" != "${GREVersion}"
-      WriteRegStr HKLM "Software\mozilla.org\Mozilla" "CurrentVersion" "${GREVersion}"
+      WriteRegStr HKLM "Software\teracet.com\Teracet" "CurrentVersion" "${GREVersion}"
     ${EndIf}
   ${EndIf}
 
@@ -109,7 +109,7 @@
     ${If} ${RunningX64}
       SetRegView 64
     ${EndIf}
-    ReadRegDWORD $5 HKLM "Software\Mozilla\MaintenanceService" "Attempted"
+    ReadRegDWORD $5 HKLM "Software\Teracet\MaintenanceService" "Attempted"
     ClearErrors
     ${If} ${RunningX64}
       SetRegView lastused
@@ -480,7 +480,7 @@
 !macroend
 !define FixShellIconHandler "!insertmacro FixShellIconHandler"
 
-; Add Software\Mozilla\ registry entries (uses SHCTX).
+; Add Software\Teracet\ registry entries (uses SHCTX).
 !macro SetAppKeys
   ; Check if this is an ESR release and if so add registry values so it is
   ; possible to determine that this is an ESR install (bug 726781).
@@ -493,14 +493,14 @@
   ${EndIf}
 
   ${GetLongPath} "$INSTDIR" $8
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})\Main"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})\Main"
   ${WriteRegStr2} $TmpVal "$0" "Install Directory" "$8" 0
   ${WriteRegStr2} $TmpVal "$0" "PathToExe" "$8\${FileMainEXE}" 0
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})\Uninstall"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})\Uninstall"
   ${WriteRegStr2} $TmpVal "$0" "Description" "${BrandFullNameInternal} ${AppVersion}$3 (${ARCH} ${AB_CD})" 0
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal}\${AppVersion}$3 (${ARCH} ${AB_CD})"
   ${WriteRegStr2} $TmpVal  "$0" "" "${AppVersion}$3 (${ARCH} ${AB_CD})" 0
   ${If} "$3" == ""
     DeleteRegValue SHCTX "$0" "ESR"
@@ -508,14 +508,14 @@
     ${WriteRegDWORD2} $TmpVal "$0" "ESR" 1 0
   ${EndIf}
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal} ${AppVersion}$3\bin"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal} ${AppVersion}$3\bin"
   ${WriteRegStr2} $TmpVal "$0" "PathToExe" "$8\${FileMainEXE}" 0
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal} ${AppVersion}$3\extensions"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal} ${AppVersion}$3\extensions"
   ${WriteRegStr2} $TmpVal "$0" "Components" "$8\components" 0
   ${WriteRegStr2} $TmpVal "$0" "Plugins" "$8\plugins" 0
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal} ${AppVersion}$3"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal} ${AppVersion}$3"
   ${WriteRegStr2} $TmpVal "$0" "GeckoVer" "${GREVersion}" 0
   ${If} "$3" == ""
     DeleteRegValue SHCTX "$0" "ESR"
@@ -523,7 +523,7 @@
     ${WriteRegDWORD2} $TmpVal "$0" "ESR" 1 0
   ${EndIf}
 
-  StrCpy $0 "Software\Mozilla\${BrandFullNameInternal}$3"
+  StrCpy $0 "Software\Teracet\${BrandFullNameInternal}$3"
   ${WriteRegStr2} $TmpVal "$0" "" "${GREVersion}" 0
   ${WriteRegStr2} $TmpVal "$0" "CurrentVersion" "${AppVersion}$3 (${ARCH} ${AB_CD})" 0
 !macroend
@@ -575,7 +575,7 @@
     ${WriteRegStr2} $1 "$0" "DisplayVersion" "${AppVersion}" 0
     ${WriteRegStr2} $1 "$0" "HelpLink" "${HelpLink}" 0
     ${WriteRegStr2} $1 "$0" "InstallLocation" "$8" 0
-    ${WriteRegStr2} $1 "$0" "Publisher" "Mozilla" 0
+    ${WriteRegStr2} $1 "$0" "Publisher" "Teracet" 0
     ${WriteRegStr2} $1 "$0" "UninstallString" "$\"$8\uninstall\helper.exe$\"" 0
     DeleteRegValue SHCTX "$0" "URLInfoAbout"
 ; Don't add URLUpdateInfo which is the release notes url except for the release
@@ -757,7 +757,7 @@
     ; Setting the Attempted value will ensure that a new Maintenance Service
     ; install will never be attempted again after this from updates.  The value
     ; is used only to see if updates should attempt new service installs.
-    WriteRegDWORD HKLM "Software\Mozilla\MaintenanceService" "Attempted" 1
+    WriteRegDWORD HKLM "Software\Teracet\MaintenanceService" "Attempted" 1
 
     ; These values associate the allowed certificates for the current
     ; installation.
