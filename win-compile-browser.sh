@@ -72,17 +72,6 @@ echo 'APP_VERSION="0.0.1"'                             >> "$BRANDING_DIR/configu
 sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$NSIS_DIR/../app.tag"
 sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$NSIS_DIR/defines.nsi.in"
 sed -i 's/Firefox/SQLite Composer/'                          "$NSIS_DIR/defines.nsi.in"
-sed -i 's/\\Firefox/\\\${AppName}/'                          "$NSIS_DIR/installer.nsi"
-sed -i 's/Mozilla\\/Teracet\\/g'                             "$NSIS_DIR/installer.nsi"
-sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/installer.nsi"
-sed -i 's/mozilla\.org/teracet\.com/'                        "$NSIS_DIR/installer.nsi"
-sed -i 's/"Mozilla/"Teracet/'                                "$NSIS_DIR/installer.nsi"
-sed -i '/Publisher/ s/Mozilla/Teracet/'                      "$NSIS_DIR/shared.nsh"
-sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/shared.nsh"
-sed -i 's/\\mozilla\.org/\\teracet\.com/'                    "$NSIS_DIR/shared.nsh"
-sed -i 's/Mozilla\\Firefox/Teracet\\\${AppName}/'            "$NSIS_DIR/uninstaller.nsi"
-sed -i 's/Mozilla\\/Teracet\\/'                              "$NSIS_DIR/uninstaller.nsi"
-sed -i 's/\\Mozilla/\\Teracet/'                              "$NSIS_DIR/uninstaller.nsi"
 sed -i 's/\\Mozilla/\\Teracet/'                              "$SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
 
 cp "$ICON_DIR/win/icon.ico" "$BRANDING_DIR/firefox.ico"
@@ -110,49 +99,13 @@ echo 'apps/sqlite-manager/chrome/skin/default/images/close.gif' >> "$ALLOWED_DUP
 echo 'chrome/toolkit/skin/classic/global/icons/Close.gif'       >> "$ALLOWED_DUPES"
 unset ALLOWED_DUPES
 
-# Add a new shortcut within the installation directory so the user can start
-# the application from there if necessary.
+# Copy over patched nsis files. The patches include:
+#  + Added shortcut in the installation directory 
+#  + Fixed branding
+#  + Fixed shortcuts (they need to start with parameters)
+#  + Removed file associations
 
-FILE="$NSIS_DIR/installer.nsi"
-TMP_FILE="$NSIS_DIR/new-installer.nsi"
-INSERT_BEFORE_LINE=$(grep -nF '${If} $AddDesktopSC == 1' "$FILE" | cut -d ':' -f 1)
-
-{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-create-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
-mv "$TMP_FILE" "$FILE"
-
-unset FILE
-unset TMP_FILE
-unset INSERT_BEFORE_LINE
-
-# Ensure that the new shortcut we just created gets deleted by the uninstaller.
-
-FILE="$NSIS_DIR/uninstaller.nsi"
-TMP_FILE="$NSIS_DIR/new-uninstaller.nsi"
-INSERT_BEFORE_LINE=$(grep -nF -m 1 '${un.DeleteShortcuts}' "$FILE" | cut -d ':' -f 1)
-
-{ head -n $(($INSERT_BEFORE_LINE-1)) "$FILE"; cat "$REPO_DIR/win-delete-shortcut.nsi"; tail -n +$INSERT_BEFORE_LINE "$FILE"; } > "$TMP_FILE"
-mv "$TMP_FILE" "$FILE"
-
-unset FILE
-unset TMP_FILE
-unset INSERT_BEFORE_LINE
-
-# Patch the various shortcuts that are created by the installer, since
-# sqlite-composer-bin needs to be executed with particular arugments.
-
-SC_PARAMS='"--app $\\"$INSTDIR\\apps\\sqlite-manager\\application.ini$\\""' # "--app $\"$INSTDIR\apps\sqlite-manager\application.ini$\""
-sed -i "/CreateShortCut/ s/\$/ $SC_PARAMS/" "$NSIS_DIR/installer.nsi"
-unset SC_PARAMS
-
-# Patch the "Launch App Now" functionality at the end of the installer.
-# Normally, this function just launches the executable, but we need it to
-# launch the executable with our arugments.
-
-OLD_LAUNCH='Exec "\$\\"$INSTDIR\\\${FileMainEXE}\$\\""'   # Exec "$\"$INSTDIR\${FileMainEXE}$\""
-NEW_LAUNCH='ExecShell "" "\$INSTDIR\\\${BrandFullName}.lnk"' # ExecShell "$INSTDIR\${BrandFullName}.lnk"
-sed -i "s/$OLD_LAUNCH/$NEW_LAUNCH/" "$NSIS_DIR/installer.nsi"
-unset OLD_LAUNCH
-unset NEW_LAUNCH
+cp "$REPO_DIR/windows/nsis/"* "$NSIS_DIR"
 
 
 # BUILD
@@ -211,19 +164,3 @@ sed -i 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).vers
 # PACKAGE
 
 ./mach build installer
-
-
-# INSTALL
-
-# In order to extract the files that are required to run our newly built
-# Firefox, we need to use the "install" rule from the makefile. But since we
-# don't actually want to install it on this system, we made sure to configure
-# the build to install into a temporary directory instead, where we can then
-# take the necessary files.
-
-#mkdir -p "$TMP_INSTALL_DIR"
-#./mach install
-#rm -rf "$INSTALL_DIR" && mkdir -p "$INSTALL_DIR"
-#mv "$TMP_INSTALL_DIR/lib/firefox-$FIREFOX_VERSION/"* "$INSTALL_DIR"
-#rm -rf "$TMP_INSTALL_DIR"
-#unset TMP_INSTALL_DIR
