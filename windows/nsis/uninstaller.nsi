@@ -284,21 +284,21 @@ Section "Uninstall"
     ${un.SetAppLSPCategories}
   ${EndIf}
 
-  ${un.RegCleanAppHandler} "FirefoxURL-$AppUserModelID"
-  ${un.RegCleanAppHandler} "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanProtocolHandler} "ftp"
-  ${un.RegCleanProtocolHandler} "http"
-  ${un.RegCleanProtocolHandler} "https"
-  ${un.RegCleanFileHandler}  ".htm"   "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".html"  "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".shtml" "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".xht"   "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".xhtml" "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".oga"  "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".ogg"  "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".ogv"  "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".pdf"  "FirefoxHTML-$AppUserModelID"
-  ${un.RegCleanFileHandler}  ".webm"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanAppHandler} "FirefoxURL-$AppUserModelID"
+;  ${un.RegCleanAppHandler} "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanProtocolHandler} "ftp"
+;  ${un.RegCleanProtocolHandler} "http"
+;  ${un.RegCleanProtocolHandler} "https"
+;  ${un.RegCleanFileHandler}  ".htm"   "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".html"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".shtml" "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".xht"   "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".xhtml" "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".oga"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".ogg"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".ogv"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".pdf"  "FirefoxHTML-$AppUserModelID"
+;  ${un.RegCleanFileHandler}  ".webm"  "FirefoxHTML-$AppUserModelID"
 
   SetShellVarContext all  ; Set SHCTX to HKLM
   ${un.GetSecondInstallPath} "Software\Teracet" $R9
@@ -307,10 +307,10 @@ Section "Uninstall"
     ${un.GetSecondInstallPath} "Software\Teracet" $R9
   ${EndIf}
 
-  DeleteRegKey HKLM "Software\Clients\StartMenuInternet\${AppRegName}-$AppUserModelID"
+;  DeleteRegKey HKLM "Software\Clients\StartMenuInternet\${AppRegName}-$AppUserModelID"
   DeleteRegValue HKLM "Software\RegisteredApplications" "${AppRegName}-$AppUserModelID"
 
-  DeleteRegKey HKCU "Software\Clients\StartMenuInternet\${AppRegName}-$AppUserModelID"
+;  DeleteRegKey HKCU "Software\Clients\StartMenuInternet\${AppRegName}-$AppUserModelID"
   DeleteRegValue HKCU "Software\RegisteredApplications" "${AppRegName}-$AppUserModelID"
 
   ; Remove old protocol handler and StartMenuInternet keys without install path
@@ -318,19 +318,19 @@ Section "Uninstall"
   ReadRegStr $0 HKLM "Software\Classes\FirefoxHTML\DefaultIcon" ""
   StrCpy $0 $0 -2
   ${If} $0 == "$INSTDIR\${FileMainEXE}"
-    DeleteRegKey HKLM "Software\Classes\FirefoxHTML"
-    DeleteRegKey HKLM "Software\Classes\FirefoxURL"
+;    DeleteRegKey HKLM "Software\Classes\FirefoxHTML"
+;    DeleteRegKey HKLM "Software\Classes\FirefoxURL"
     ${StrFilter} "${FileMainEXE}" "+" "" "" $R9
-    DeleteRegKey HKLM "Software\Clients\StartMenuInternet\$R9"
+;    DeleteRegKey HKLM "Software\Clients\StartMenuInternet\$R9"
     DeleteRegValue HKLM "Software\RegisteredApplications" "${AppRegName}"
   ${EndIf}
   ReadRegStr $0 HKCU "Software\Classes\FirefoxHTML\DefaultIcon" ""
   StrCpy $0 $0 -2
   ${If} $0 == "$INSTDIR\${FileMainEXE}"
-    DeleteRegKey HKCU "Software\Classes\FirefoxHTML"
-    DeleteRegKey HKCU "Software\Classes\FirefoxURL"
+;    DeleteRegKey HKCU "Software\Classes\FirefoxHTML"
+;    DeleteRegKey HKCU "Software\Classes\FirefoxURL"
     ${StrFilter} "${FileMainEXE}" "+" "" "" $R9
-    DeleteRegKey HKCU "Software\Clients\StartMenuInternet\$R9"
+;    DeleteRegKey HKCU "Software\Clients\StartMenuInternet\$R9"
     DeleteRegValue HKCU "Software\RegisteredApplications" "${AppRegName}"
   ${EndIf}
 
@@ -345,8 +345,8 @@ Section "Uninstall"
     DeleteRegKey HKLM "$0"
     DeleteRegKey HKCU "$0"
     StrCpy $0 "Software\Classes\MIME\Database\Content Type\application/x-xpinstall;app=firefox"
-    DeleteRegKey HKLM "$0"
-    DeleteRegKey HKCU "$0"
+;    DeleteRegKey HKLM "$0"
+;    DeleteRegKey HKCU "$0"
   ${Else}
     ReadRegStr $R1 HKLM "$0" ""
     ${un.RemoveQuotesFromPath} "$R1" $R1

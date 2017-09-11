@@ -1,11 +1,11 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://teracet.com/MPL/2.0/.
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Required Plugins:
 # AppAssocReg    http://nsis.sourceforge.net/Application_Association_Registration_plug-in
 # ApplicationID  http://nsis.sourceforge.net/ApplicationID_plug-in
-# CityHash       http://dxr.teracet.com/mozilla-central/source/other-licenses/nsis/Contrib/CityHash
+# CityHash       http://dxr.mozilla.org/mozilla-central/source/other-licenses/nsis/Contrib/CityHash
 # ShellLink      http://nsis.sourceforge.net/ShellLink_plug-in
 # UAC            http://nsis.sourceforge.net/UAC_plug-in
 # ServicesHelper Mozilla specific plugin that is located in /other-licenses/nsis
@@ -373,27 +373,27 @@ Section "-Application" APP_IDX
   ; On install always add the FirefoxHTML and FirefoxURL keys.
   ; An empty string is used for the 5th param because FirefoxHTML is not a
   ; protocol handler.
-  ${GetLongPath} "$INSTDIR\${FileMainEXE}" $8
-  StrCpy $2 "$\"$8$\" -osint -url $\"%1$\""
+;  ${GetLongPath} "$INSTDIR\${FileMainEXE}" $8
+;  StrCpy $2 "$\"$8$\" -osint -url $\"%1$\""
 
   ; In Win8, the delegate execute handler picks up the value in FirefoxURL and
   ; FirefoxHTML to launch the desktop browser when it needs to.
-  ${AddDisabledDDEHandlerValues} "FirefoxHTML-$AppUserModelID" "$2" "$8,1" \
-                                 "${AppRegName} Document" ""
-  ${AddDisabledDDEHandlerValues} "FirefoxURL-$AppUserModelID" "$2" "$8,1" \
-                                 "${AppRegName} URL" "true"
+;  ${AddDisabledDDEHandlerValues} "FirefoxHTML-$AppUserModelID" "$2" "$8,1" \
+;                                 "${AppRegName} Document" ""
+;  ${AddDisabledDDEHandlerValues} "FirefoxURL-$AppUserModelID" "$2" "$8,1" \
+;                                 "${AppRegName} URL" "true"
 
   ; For pre win8, the following keys should only be set if we can write to HKLM.
   ; For post win8, the keys below can be set in HKCU if needed.
-  ${If} $TmpVal == "HKLM"
-    ; Set the Start Menu Internet and Registered App HKLM registry keys.
-    ${SetStartMenuInternet} "HKLM"
-    ${FixShellIconHandler} "HKLM"
-  ${ElseIf} ${AtLeastWin8}
-    ; Set the Start Menu Internet and Registered App HKCU registry keys.
-    ${SetStartMenuInternet} "HKCU"
-    ${FixShellIconHandler} "HKCU"
-  ${EndIf}
+;  ${If} $TmpVal == "HKLM"
+;    ; Set the Start Menu Internet and Registered App HKLM registry keys.
+;    ${SetStartMenuInternet} "HKLM"
+;    ${FixShellIconHandler} "HKLM"
+;  ${ElseIf} ${AtLeastWin8}
+;    ; Set the Start Menu Internet and Registered App HKCU registry keys.
+;    ${SetStartMenuInternet} "HKCU"
+;    ${FixShellIconHandler} "HKCU"
+;  ${EndIf}
 
 !ifdef MOZ_MAINTENANCE_SERVICE
   ; If the maintenance service page was displayed then a value was already
@@ -558,49 +558,49 @@ Section "-InstallEndCleanup"
   ${Unless} ${Silent}
     ClearErrors
     ${MUI_INSTALLOPTIONS_READ} $0 "summary.ini" "Field 4" "State"
-    ${If} "$0" == "1"
-      ; NB: this code is duplicated in stub.nsi. Please keep in sync.
-      ; For data migration in the app, we want to know what the default browser
-      ; value was before we changed it. To do so, we read it here and store it
-      ; in our own registry key.
-      StrCpy $0 ""
-      AppAssocReg::QueryCurrentDefault "http" "protocol" "effective"
-      Pop $1
-      ; If the method hasn't failed, $1 will contain the progid. Check:
-      ${If} "$1" != "method failed"
-      ${AndIf} "$1" != "method not available"
-        ; Read the actual command from the progid
-        ReadRegStr $0 HKCR "$1\shell\open\command" ""
-      ${EndIf}
-      ; If using the App Association Registry didn't happen or failed, fall back
-      ; to the effective http default:
-      ${If} "$0" == ""
-        ReadRegStr $0 HKCR "http\shell\open\command" ""
-      ${EndIf}
-      ; If we have something other than empty string now, write the value.
-      ${If} "$0" != ""
-        ClearErrors
-        WriteRegStr HKCU "Software\Teracet\${AppName}" "OldDefaultBrowserCommand" "$0"
-      ${EndIf}
-
-      ${LogHeader} "Setting as the default browser"
-      ClearErrors
-      ${GetParameters} $0
-      ${GetOptions} "$0" "/UAC:" $0
-      ${If} ${Errors}
-        Call SetAsDefaultAppUserHKCU
-      ${Else}
-        GetFunctionAddress $0 SetAsDefaultAppUserHKCU
-        UAC::ExecCodeSegment $0
-      ${EndIf}
-    ${ElseIfNot} ${Errors}
+  ;  ${If} "$0" == "1"
+  ;    ; NB: this code is duplicated in stub.nsi. Please keep in sync.
+  ;    ; For data migration in the app, we want to know what the default browser
+  ;    ; value was before we changed it. To do so, we read it here and store it
+  ;    ; in our own registry key.
+  ;    StrCpy $0 ""
+  ;    AppAssocReg::QueryCurrentDefault "http" "protocol" "effective"
+  ;    Pop $1
+  ;    ; If the method hasn't failed, $1 will contain the progid. Check:
+  ;    ${If} "$1" != "method failed"
+  ;    ${AndIf} "$1" != "method not available"
+  ;      ; Read the actual command from the progid
+  ;      ReadRegStr $0 HKCR "$1\shell\open\command" ""
+  ;    ${EndIf}
+  ;    ; If using the App Association Registry didn't happen or failed, fall back
+  ;    ; to the effective http default:
+  ;    ${If} "$0" == ""
+  ;      ReadRegStr $0 HKCR "http\shell\open\command" ""
+  ;    ${EndIf}
+  ;    ; If we have something other than empty string now, write the value.
+  ;    ${If} "$0" != ""
+  ;      ClearErrors
+  ;      WriteRegStr HKCU "Software\Teracet\${AppName}" "OldDefaultBrowserCommand" "$0"
+  ;    ${EndIf}
+  ; 
+  ;    ${LogHeader} "Setting as the default browser"
+  ;    ClearErrors
+  ;    ${GetParameters} $0
+  ;    ${GetOptions} "$0" "/UAC:" $0
+  ;    ${If} ${Errors}
+  ;      Call SetAsDefaultAppUserHKCU
+  ;    ${Else}
+  ;      GetFunctionAddress $0 SetAsDefaultAppUserHKCU
+  ;      UAC::ExecCodeSegment $0
+  ;    ${EndIf}
+  ;  ${ElseIfNot} ${Errors}
       ${LogHeader} "Writing default-browser opt-out"
       ClearErrors
       WriteRegStr HKCU "Software\Teracet\${AppName}" "DefaultBrowserOptOut" "True"
       ${If} ${Errors}
         ${LogMsg} "Error writing default-browser opt-out"
       ${EndIf}
-    ${EndIf}
+  ;  ${EndIf}
   ${EndUnless}
 
   ; Adds a pinned Task Bar shortcut (see MigrateTaskBarShortcut for details).
@@ -1005,17 +1005,17 @@ Function preSummary
     ${EndIf}
     ; If Firefox isn't the http handler for this user show the option to set
     ; Firefox as the default browser.
-    ${If} "$R9" != "true"
-    ${AndIf} ${AtMostWin2008R2}
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Settings" NumFields "4"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Type   "checkbox"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Text   "$(SUMMARY_TAKE_DEFAULTS)"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Left   "0"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Right  "-1"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" State  "1"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Top    "32"
-      WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Bottom "53"
-    ${EndIf}
+  ;  ${If} "$R9" != "true"
+  ;  ${AndIf} ${AtMostWin2008R2}
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Settings" NumFields "4"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Type   "checkbox"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Text   "$(SUMMARY_TAKE_DEFAULTS)"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Left   "0"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Right  "-1"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" State  "1"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Top    "32"
+  ;    WriteINIStr "$PLUGINSDIR\summary.ini" "Field 4" Bottom "53"
+  ;  ${EndIf}
   ${EndUnless}
 
   ${If} "$TmpVal" == "true"
