@@ -257,6 +257,11 @@ Section "Uninstall"
   ${un.RegCleanUninstall}
   ${un.DeleteShortcuts}
 
+  ;; Delete the shortcut within the installation directory.
+  ${If} ${FileExists} "$INSTDIR\${BrandFullName}.lnk"
+    Delete "$INSTDIR\${BrandFullName}.lnk"
+  ${EndIf}
+
   ; Unregister resources associated with Win7 taskbar jump lists.
   ${If} ${AtLeastWin7}
   ${AndIf} "$AppUserModelID" != ""

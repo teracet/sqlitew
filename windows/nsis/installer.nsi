@@ -484,7 +484,7 @@ Section "-Application" APP_IDX
   ; since this will either add it for the user if unelevated or All Users if
   ; elevated.
   ${If} $AddStartMenuSC == 1
-    CreateShortCut "$SMPROGRAMS\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}"
+    CreateShortCut "$SMPROGRAMS\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}" "--app $\"$INSTDIR\apps\sqlite-manager\application.ini$\""
     ${If} ${FileExists} "$SMPROGRAMS\${BrandFullName}.lnk"
       ShellLink::SetShortCutWorkingDirectory "$SMPROGRAMS\${BrandFullName}.lnk" \
                                            "$INSTDIR"
@@ -505,8 +505,21 @@ Section "-Application" APP_IDX
     FileClose $0
   ${EndIf}
 
+  ;; Create a shortcut within the installation directory for user convenience.
+  CreateShortCut "$INSTDIR\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}" "--app $\"$INSTDIR\apps\sqlite-manager\application.ini$\""
+  ${If} ${FileExists} "$INSTDIR\${BrandFullName}.lnk"
+    ;;ShellLink::SetShortCutWorkingDirectory "$INSTDIR\${BrandFullName}.lnk" "$INSTDIR"
+    ${If} ${AtLeastWin7}
+    ${AndIf} "$AppUserModelID" != ""
+      ApplicationID::Set "$INSTDIR\${BrandFullName}.lnk" "$AppUserModelID" "true"
+    ${EndIf}
+    ${LogMsg} "Added Shortcut: $INSTDIR\${BrandFullName}.lnk"
+  ${Else}
+    ${LogMsg} "** ERROR Adding Shortcut: $INSTDIR\${BrandFullName}.lnk"
+  ${EndIf}
+
   ${If} $AddDesktopSC == 1
-    CreateShortCut "$DESKTOP\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}"
+    CreateShortCut "$DESKTOP\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}" "--app $\"$INSTDIR\apps\sqlite-manager\application.ini$\""
     ${If} ${FileExists} "$DESKTOP\${BrandFullName}.lnk"
       ShellLink::SetShortCutWorkingDirectory "$DESKTOP\${BrandFullName}.lnk" \
                                              "$INSTDIR"
@@ -725,7 +738,7 @@ FunctionEnd
 # Helper Functions
 
 Function AddQuickLaunchShortcut
-  CreateShortCut "$QUICKLAUNCH\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}"
+  CreateShortCut "$QUICKLAUNCH\${BrandFullName}.lnk" "$INSTDIR\${FileMainEXE}" "--app $\"$INSTDIR\apps\sqlite-manager\application.ini$\""
   ${If} ${FileExists} "$QUICKLAUNCH\${BrandFullName}.lnk"
     ShellLink::SetShortCutWorkingDirectory "$QUICKLAUNCH\${BrandFullName}.lnk" \
                                            "$INSTDIR"
@@ -795,7 +808,7 @@ Function LaunchApp
   ${GetParameters} $0
   ${GetOptions} "$0" "/UAC:" $1
   ${If} ${Errors}
-    Exec "$\"$INSTDIR\${FileMainEXE}$\""
+    ExecShell "" "$INSTDIR\${BrandFullName}.lnk"
   ${Else}
     GetFunctionAddress $0 LaunchAppFromElevatedProcess
     UAC::ExecCodeSegment $0
@@ -806,7 +819,7 @@ Function LaunchAppFromElevatedProcess
   ; Set our current working directory to the application's install directory
   ; otherwise the 7-Zip temp directory will be in use and won't be deleted.
   SetOutPath "$INSTDIR"
-  Exec "$\"$INSTDIR\${FileMainEXE}$\""
+  ExecShell "" "$INSTDIR\${BrandFullName}.lnk"
 FunctionEnd
 
 ################################################################################
