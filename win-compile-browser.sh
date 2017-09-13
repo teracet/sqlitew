@@ -67,16 +67,27 @@ sed -i 's/"Mozilla Developer Preview"/"SQLite Composer"/' "$BRANDING_DIR/brandin
 sed -i 's/"mozilla.org"/"teracet.com"/'                   "$BRANDING_DIR/branding.nsi"
 sed -i 's/Nightly/"SQLite Composer"/'                     "$BRANDING_DIR/configure.sh"
 echo 'MOZ_APP_NAME="sqlite-composer-bin"'              >> "$BRANDING_DIR/configure.sh"
-echo 'APP_VERSION="0.0.1"'                             >> "$BRANDING_DIR/configure.sh"
 
 sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$NSIS_DIR/../app.tag"
 sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$NSIS_DIR/defines.nsi.in"
 sed -i 's/Firefox/SQLite Composer/'                          "$NSIS_DIR/defines.nsi.in"
 sed -i 's/\\Mozilla/\\Teracet/'                              "$SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
 
-cp "$ICON_DIR/win/icon.ico" "$BRANDING_DIR/firefox.ico"
+cp "$ICON_DIR/win/firefox.ico"            "$BRANDING_DIR/firefox.ico"
+cp "$ICON_DIR/win/VisualElements_70.png"  "$BRANDING_DIR/VisualElements_70.png"
+cp "$ICON_DIR/win/VisualElements_150.png" "$BRANDING_DIR/VisualElements_150.png"
+cp "$ICON_DIR/win/wizHeader.bmp"          "$BRANDING_DIR/wizHeader.bmp"
+cp "$ICON_DIR/win/wizHeaderRTL.bmp"       "$BRANDING_DIR/wizHeaderRTL.bmp"
+cp "$ICON_DIR/win/wizWatermark.bmp"       "$BRANDING_DIR/wizWatermark.bmp"
 
 unset BRANDING_DIR
+
+
+# PATCH: VERSION
+
+echo 'MOZ_APP_VERSION="0.0.1"' >> "$SOURCE_DIR/browser/branding/sqlite-composer/configure.sh"
+echo '0.0.1' > "$SOURCE_DIR/browser/config/version.txt"
+echo '0.0.1' > "$SOURCE_DIR/browser/config/version_display.txt"
 
 
 # PATCH: INSTALLER
