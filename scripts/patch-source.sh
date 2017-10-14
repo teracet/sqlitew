@@ -3,6 +3,12 @@
 REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$REPO_SCRIPTS_DIR/set-defaults.sh"
 
+# `sed -i` behaves differently on Linux and Mac, so this function abstracts
+# those differences.
+sedi () {
+	sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
+}
+
 
 # PATCH: SQLite Flags
 
@@ -27,11 +33,11 @@ cp -r "$FF_SOURCE_DIR/browser/branding/unofficial" "$ff_branding_dir"
 # images. Note that some windows installer files (.nsi) are patched in this
 # section.
 
-sed -i '' 's/"Nightly"/"SQLite Composer"/'   "$ff_branding_dir/locales/en-US/brand.dtd"
-sed -i '' 's/=Nightly/=SQLite Composer/'     "$ff_branding_dir/locales/en-US/brand.properties"
-sed -i '' 's/"Mozilla"/"Teracet"/'           "$ff_branding_dir/locales/en-US/brand.dtd"
-sed -i '' 's/=Mozilla/=Teracet/'             "$ff_branding_dir/locales/en-US/brand.properties"
-sed -i '' 's/Nightly/"SQLite Composer"/'     "$ff_branding_dir/configure.sh"
+sedi 's/"Nightly"/"SQLite Composer"/'        "$ff_branding_dir/locales/en-US/brand.dtd"
+sedi 's/=Nightly/=SQLite Composer/'          "$ff_branding_dir/locales/en-US/brand.properties"
+sedi 's/"Mozilla"/"Teracet"/'                "$ff_branding_dir/locales/en-US/brand.dtd"
+sedi 's/=Mozilla/=Teracet/'                  "$ff_branding_dir/locales/en-US/brand.properties"
+sedi 's/Nightly/"SQLite Composer"/'          "$ff_branding_dir/configure.sh"
 echo 'MOZ_APP_NAME="sqlite-composer-bin"' >> "$ff_branding_dir/configure.sh" # Is this only needed on Windows?
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
@@ -40,14 +46,14 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 fi
 
 if [[ "$BUILD_OS" = "windows" ]] ; then
-	sed -i 's/"Mozilla Developer Preview"/"SQLite Composer"/' "$ff_branding_dir/branding.nsi"
-	sed -i 's/"mozilla.org"/"teracet.com"/'                   "$ff_branding_dir/branding.nsi"
+	sedi 's/"Mozilla Developer Preview"/"SQLite Composer"/' "$ff_branding_dir/branding.nsi"
+	sedi 's/"mozilla.org"/"teracet.com"/'                   "$ff_branding_dir/branding.nsi"
 
 	ff_nsis_dir="$FF_SOURCE_DIR/browser/installer/windows/nsis"
-	sed -i 's/Mozilla Firefox/SQLite Composer/'                  "$ff_nsis_dir/../app.tag"
-	sed -i 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$ff_nsis_dir/defines.nsi.in"
-	sed -i 's/Firefox/SQLite Composer/'                          "$ff_nsis_dir/defines.nsi.in"
-	sed -i 's/\\Mozilla/\\Teracet/'                              "$FF_SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
+	sedi 's/Mozilla Firefox/SQLite Composer/'                  "$ff_nsis_dir/../app.tag"
+	sedi 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$ff_nsis_dir/defines.nsi.in"
+	sedi 's/Firefox/SQLite Composer/'                          "$ff_nsis_dir/defines.nsi.in"
+	sedi 's/\\Mozilla/\\Teracet/'                              "$FF_SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
 
 	cp "$REPO_ICON_DIR/windows/firefox.ico"            "$ff_branding_dir/firefox.ico"
 	cp "$REPO_ICON_DIR/windows/VisualElements_70.png"  "$ff_branding_dir/VisualElements_70.png"
@@ -67,24 +73,26 @@ echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
 
 # PATCH: Installer
 
-# Ensure our additional files are included in the generated installer.
+if [[ "$BUILD_OS" != "linux" ]] ; then
+	# Ensure our additional files are included in the generated installer.
 
-package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
-echo '[sqlite-composer]'                          >> "$package_manifest"
-if [[ "$BUILD_OS" = "mac" ]] ; then
-	echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
+	package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
+	echo '[sqlite-composer]'                          >> "$package_manifest"
+	if [[ "$BUILD_OS" = "mac" ]] ; then
+		echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
+	fi
+	echo '@RESPATH@/apps/*'                           >> "$package_manifest"
+	echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
+	echo '@RESPATH@/defaults/pref/sqlite-composer.js' >> "$package_manifest"
+	sedi '/@BINPATH@\/@MOZ_APP_NAME@-bin/d'              "$package_manifest"
+
+	# Patch the duplicate file error caused by including the sqlite-manager
+	# extension in the installer.
+
+	allowed_dupes="$FF_SOURCE_DIR/browser/installer/allowed-dupes.mn"
+	echo 'apps/sqlite-manager/chrome/skin/default/images/close.gif' >> "$allowed_dupes"
+	echo 'chrome/toolkit/skin/classic/global/icons/Close.gif'       >> "$allowed_dupes"
 fi
-echo '@RESPATH@/apps/*'                           >> "$package_manifest"
-echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
-echo '@RESPATH@/defaults/pref/sqlite-composer.js' >> "$package_manifest"
-sed -i '' '/@BINPATH@\/@MOZ_APP_NAME@-bin/d'         "$package_manifest"
-
-# Patch the duplicate file error caused by including the sqlite-manager
-# extension in the installer.
-
-allowed_dupes="$FF_SOURCE_DIR/browser/installer/allowed-dupes.mn"
-echo 'apps/sqlite-manager/chrome/skin/default/images/close.gif' >> "$allowed_dupes"
-echo 'chrome/toolkit/skin/classic/global/icons/Close.gif'       >> "$allowed_dupes"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	# Patch the Info.plist so that our launch script is executed instead of

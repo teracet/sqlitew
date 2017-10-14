@@ -9,6 +9,12 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	ff_bundle_res_dir="$ff_bundle_dir/Contents/Resources"
 fi
 
+# `sed -i` behaves differently on Linux and Mac, so this function abstracts
+# those differences.
+sedi () {
+	sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
+}
+
 
 # CONFIGURE PREFERENCES
 
@@ -46,7 +52,7 @@ cp -r "$SM_SOURCE_DIR/"* "$app_dir"
 # Update the branding.
 
 cp "$REPO_CONFIG_DIR/application.ini" "$app_dir"
-grep --null -rl "SQLite Manager" "$app_dir" | xargs -0 sed -i '' 's/SQLite Manager/SQLite Composer/g'
+grep --null -rl "SQLite Manager" "$app_dir" | xargs -0 sedi 's/SQLite Manager/SQLite Composer/g'
 
 rm -f "$app_dir/chrome/icons/default/"*
 cp "$REPO_ICON_DIR/icon_16x16.png" "$app_dir/chrome/icons/default/default16.png"
@@ -61,7 +67,7 @@ cp "$REPO_ICON_DIR/icon_128x128.png" "$app_dir/icons/mozicon128.png"
 # in the repo; if we upgrade SQLite Manager, we should update this number as
 # well.
 
-sed -i '' 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "0.8.3";/' "$app_dir/chrome/resource/appInfo.js"
+sedi 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "0.8.3";/' "$app_dir/chrome/resource/appInfo.js"
 
 
 # INSTALL LAUNCHER
