@@ -8,8 +8,11 @@ MOZ_REQUIRE_SIGNING=0
 # Ignore previous builds
 mk_add_options AUTOCLOBBER=1
 
+# Specify the build dir
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-sqlite-composer
+
 # Set the branding
-ac_add_options --with-branding=browser/branding/unofficial
+ac_add_options --with-branding=browser/branding/sqlite-composer
 
 # Disable unwanted services
 ac_add_options --disable-debug
