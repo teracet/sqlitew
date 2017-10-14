@@ -4,16 +4,16 @@
 
 export SC_VERSION=0.0.1
 
-REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SCRIPTS_DIR="$REPO_DIR/scripts"
 . "$REPO_SCRIPTS_DIR/set-defaults.sh"
 
 log () {
-	echo "[$0]: $1"
+	echo "$0: $1"
 }
 
 ask_yes_no () {
-	read -p "[$0]: $1" choice
+	read -p "$0: $1" choice
 	case "$choice" in
 		y|Y) echo "yes" ;;
 		n|N) echo "no" ;;
@@ -23,17 +23,17 @@ ask_yes_no () {
 
 case "$1" in
 	setup)
-		log "Performing first-time setup..."
+		log "Setup started."
 
 		if [ ! -d "$FF_SOURCE_DIR" ] ; then
-			download=$(ask_yes_no "The Firefox source is required for setup. Download now (y/n)?")
+			download=$(ask_yes_no "The Firefox source is required for setup. Download now (y/n)? ")
 
 			if [ "$download" = "yes" ] ; then
 				log "Downloading now..."
 				"$REPO_SCRIPTS_DIR/download.sh"
 				log "Firefox source downloaded."
 			else
-				log "Aborting setup."
+				log "Setup aborted."
 				exit 1
 			fi
 		fi
@@ -42,16 +42,23 @@ case "$1" in
 		"$REPO_SCRIPTS_DIR/bootstrap.sh"
 		log "Bootstrap finished."
 
-		log "First-time setup was successful."
+		log "Setup was successful."
 		;;
 
 	build)
-		log "Building..."
+		log "Build started."
 
 		if [ ! -d "$FF_SOURCE_DIR" ] ; then
-			log "Firefox source is missing; downloading now..."
-			"$REPO_SCRIPTS_DIR/download.sh"
-			log "Firefox source downloaded."
+			download=$(ask_yes_no "Firefox source is missing. Download now (y/n)? ")
+
+			if [ "$download" = "yes" ] ; then
+				log "Downloading now..."
+				"$REPO_SCRIPTS_DIR/download.sh"
+				log "Firefox source downloaded."
+			else
+				log "Build aborted."
+				exit 1
+			fi
 		fi
 
 		log "Patching Firefox source..."
@@ -70,9 +77,11 @@ case "$1" in
 		;;
 
 	package)
-		log "Packaging..."
+		log "Packaging started."
 		"$REPO_SCRIPTS_DIR/package.sh"
 		log "Packaging was successful; see build/ directory."
+		;;
+
 	*)
 		cat >&2 <<EOF
 Usage: $0 command
