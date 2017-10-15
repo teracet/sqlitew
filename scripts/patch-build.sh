@@ -4,17 +4,19 @@ REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$REPO_SCRIPTS_DIR/set-defaults.sh"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
-	ff_bundle_dir="$FF_DIST_DIR/SQLiteComposer.app"
-	ff_bundle_bin_dir="$ff_bundle_dir/Contents/MacOS"
-	ff_bundle_res_dir="$ff_bundle_dir/Contents/Resources"
+	ff_dist_bin_dir="$FF_DIST_DIR/SQLiteComposer.app/Contents/MacOS"
+	ff_dist_res_dir="$FF_DIST_DIR/SQLiteComposer.app/Contents/Resources"
+else
+	ff_dist_bin_dir="$FF_DIST_DIR/bin"
+	ff_dist_res_dir="$FF_DIST_DIR/bin"
 fi
 
 
 # CONFIGURE PREFERENCES
 
-mkdir -p "$ff_bundle_res_dir/defaults/pref"
-cp "$REPO_CONFIG_DIR/sqlite-composer.js" "$ff_bundle_res_dir/defaults/pref"
-cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_bundle_res_dir"
+mkdir -p "$ff_dist_res_dir/defaults/pref"
+cp "$REPO_CONFIG_DIR/sqlite-composer.js" "$ff_dist_res_dir/defaults/pref"
+cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_dist_res_dir"
 
 
 # INSTALL SQLITE MANAGER
@@ -27,19 +29,9 @@ cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_bundle_res_dir"
 # best resource I've found:
 # http://forums.mozillazine.org/viewtopic.php?p=11440295#p11440295
 
-case "$BUILD_OS" in
-	linux)   ff_ext_dir="$FF_DIST_DIR/bin/apps" ;;
-	mac)     ff_ext_dir="$ff_bundle_res_dir/apps" ;;
-	windows) ff_ext_dir="$FF_DIST_DIR/bin/apps" ;;
-	*)
-		echo "Unrecognized or unsupported OS: $BUILD_OS"
-		exit 1
-		;;
-esac
-
 # Copy the source.
 
-sm_cp_dir="$ff_ext_dir/sqlite-manager"
+sm_cp_dir="$ff_dist_res_dir/apps/sqlite-manager"
 mkdir -p "$sm_cp_dir"
 cp -r "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 
@@ -51,10 +43,10 @@ cp -r "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 # INSTALL LAUNCHER
 
 if [[ "$BUILD_OS" = "linux" ]] ; then
-	cp "$REPO_CONFIG_DIR/linux-launcher.sh" "$FF_DIST_DIR/bin/sqlite-composer"
-	cp "$REPO_CONFIG_DIR/linux-launcher.desktop" "$FF_DIST_DIR/bin/sqlite-composer.desktop"
+	cp "$REPO_CONFIG_DIR/linux-launcher.sh" "$ff_dist_bin_dir/sqlite-composer"
+	cp "$REPO_CONFIG_DIR/linux-launcher.desktop" "$ff_dist_bin_dir/sqlite-composer.desktop"
 fi
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
-	cp "$REPO_CONFIG_DIR/mac-launcher.sh" "$ff_bundle_bin_dir/sqlite-composer"
+	cp "$REPO_CONFIG_DIR/mac-launcher.sh" "$ff_dist_bin_dir/sqlite-composer"
 fi
