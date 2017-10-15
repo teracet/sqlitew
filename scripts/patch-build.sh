@@ -34,9 +34,9 @@ cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_bundle_res_dir"
 # http://forums.mozillazine.org/viewtopic.php?p=11440295#p11440295
 
 case "$BUILD_OS" in
-	linux)   FF_EXT_DIR="$FF_DIST_DIR/bin/apps" ;;
-	mac)     FF_EXT_DIR="$ff_bundle_res_dir/apps" ;;
-	windows) FF_EXT_DIR="$FF_DIST_DIR/bin/apps" ;;
+	linux)   ff_ext_dir="$FF_DIST_DIR/bin/apps" ;;
+	mac)     ff_ext_dir="$ff_bundle_res_dir/apps" ;;
+	windows) ff_ext_dir="$FF_DIST_DIR/bin/apps" ;;
 	*)
 		echo "Unrecognized or unsupported OS: $BUILD_OS"
 		exit 1
@@ -45,14 +45,16 @@ esac
 
 # Copy the source.
 
-app_dir="$APPS_DIR/sqlite-manager"
+app_dir="$ff_ext_dir/sqlite-manager"
 mkdir -p "$app_dir"
 cp -r "$SM_SOURCE_DIR/"* "$app_dir"
 
 # Update the branding.
 
 cp "$REPO_CONFIG_DIR/application.ini" "$app_dir"
-grep --null -rl "SQLite Manager" "$app_dir" | xargs -0 sedi 's/SQLite Manager/SQLite Composer/g'
+grep -rl "SQLite Manager" "$app_dir" | while read -r file ; do
+	sedi 's/SQLite Manager/SQLite Composer/g' "$file"
+done
 
 rm -f "$app_dir/chrome/icons/default/"*
 cp "$REPO_ICON_DIR/icon_16x16.png" "$app_dir/chrome/icons/default/default16.png"
