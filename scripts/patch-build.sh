@@ -9,12 +9,6 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	ff_bundle_res_dir="$ff_bundle_dir/Contents/Resources"
 fi
 
-# `sed -i` behaves differently on Linux and Mac, so this function abstracts
-# those differences.
-sedi () {
-	sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
-}
-
 
 # CONFIGURE PREFERENCES
 
@@ -45,31 +39,13 @@ esac
 
 # Copy the source.
 
-app_dir="$ff_ext_dir/sqlite-manager"
-mkdir -p "$app_dir"
-cp -r "$SM_SOURCE_DIR/"* "$app_dir"
+sm_cp_dir="$ff_ext_dir/sqlite-manager"
+mkdir -p "$sm_cp_dir"
+cp -r "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 
-# Update the branding.
+# Patch the copy.
 
-cp "$REPO_CONFIG_DIR/application.ini" "$app_dir"
-grep -rl "SQLite Manager" "$app_dir" | while read -r file ; do
-	sedi 's/SQLite Manager/SQLite Composer/g' "$file"
-done
-
-rm -f "$app_dir/chrome/icons/default/"*
-cp "$REPO_ICON_DIR/icon_16x16.png" "$app_dir/chrome/icons/default/default16.png"
-cp "$REPO_ICON_DIR/icon_32x32.png" "$app_dir/chrome/icons/default/default32.png"
-cp "$REPO_ICON_DIR/icon_48x48.png" "$app_dir/chrome/icons/default/default48.png"
-mkdir -p "$app_dir/icons"
-cp "$REPO_ICON_DIR/icon_128x128.png" "$app_dir/icons/mozicon128.png"
-
-# Since we are not "properly" installing the extension, there is an unexpected
-# exception that gets thrown; let's patch that.
-# We use "0.8.3" as the default version since that's the version that is saved
-# in the repo; if we upgrade SQLite Manager, we should update this number as
-# well.
-
-sedi 's/^.*SmAppInfo.extVersion =.*$/SmAppInfo.extVersion = (addon || {}).version || "0.8.3";/' "$app_dir/chrome/resource/appInfo.js"
+"$REPO_SCRIPTS_DIR/patch-sqlite-manager.sh" "$sm_cp_dir"
 
 
 # INSTALL LAUNCHER
