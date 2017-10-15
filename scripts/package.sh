@@ -14,6 +14,7 @@ case "$BUILD_OS" in
 	mac)
 		cd "$FF_SOURCE_DIR"
 		./mach package | tee "$REPO_BUILD_DIR/package.log" || exit 1
+		cp "$FF_DIST_DIR/sqlite-composer-bin-$SC_VERSION.en-US.mac.dmg" "$REPO_BUILD_DIR/sqlite-composer-$SC_VERSION.dmg"
 		;;
 	windows)
 		cd "$FF_SOURCE_DIR"
