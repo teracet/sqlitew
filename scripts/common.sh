@@ -56,7 +56,7 @@ ask_yes_no () {
 }
 
 error_exit () {
-	LOG "$1"
+	log "$1"
 	exit "${2:-1}"
 }
 
