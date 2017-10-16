@@ -38,3 +38,7 @@ To package:
 ```
 
 The packaged app can be found in `build/`.
+
+## Issues
+
+- Linux: the directory "~/.sqlitecomposer" is created automatically when running the program. This seems to be related to the crash reporter being disabled.
