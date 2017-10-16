@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BIN_DIR="$ROOT_DIR/../MacOS"
 RES_DIR="$ROOT_DIR/../Resources"
 
@@ -14,7 +14,6 @@ BIN_DIR="`cd \"$BIN_DIR\"; pwd`"
 RES_DIR="`cd \"$RES_DIR\"; pwd`"
 
 APP_DIR="$RES_DIR/apps/sqlite-manager"
-PROFILE_DIR="$RES_DIR/profiles/sqlite-composer"
-
+PROFILE_DIR="$(cd "~/.teracet/sqlite-composer/profile" && pwd)"
 mkdir -p "$PROFILE_DIR"
 "$BIN_DIR/sqlite-composer-bin" --app "$APP_DIR/application.ini" --no-remote --profile "$PROFILE_DIR"
