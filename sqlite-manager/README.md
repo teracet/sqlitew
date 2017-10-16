@@ -1,5 +1,12 @@
 # SQLite Manager
 
-This directory contains the original source code for SQLite Manager version 0.8.3 (xr), which can be found [here](https://github.com/lazierthanthou/sqlite-manager/releases).
+This directory contains the patched source code for SQLite Manager version 0.8.3 (xr), which can be found [here](https://github.com/lazierthanthou/sqlite-manager/releases).
 
-**Do not modify.** The script at `scripts/patch-sqlite-manager.sh` does the patching during build. See `scripts/README.md`.
+## Updating Icons
+
+The icons are located at:
+
+- `icons/mozicon128.png`
+- `chrome/icons/default/default16.png`
+- `chrome/icons/default/default32.png`
+- `chrome/icons/default/default48.png`

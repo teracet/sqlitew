@@ -29,7 +29,7 @@ var SmAppInfo = {
       try {
         Cu.import("resource://gre/modules/AddonManager.jsm");
         AddonManager.getAddonByID(extId, function(addon) {
-          SmAppInfo.extVersion = addon.version;
+SmAppInfo.extVersion = (addon || {}).version || "0.8.3";
         });
         //while (this.extVersion == "") {}      
       }

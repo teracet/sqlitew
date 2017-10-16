@@ -30,15 +30,9 @@ log "Installing SQLite Manager"
 # best resource I've found:
 # http://forums.mozillazine.org/viewtopic.php?p=11440295#p11440295
 
-# Copy the source.
-
 sm_cp_dir="$ff_dist_res_dir/apps/sqlite-manager"
 mkdir -p "$sm_cp_dir"
-cp -r "$SM_SOURCE_DIR/"* "$sm_cp_dir"
-
-# Patch the copy.
-
-"$REPO_SCRIPTS_DIR/patch-sqlite-manager.sh" "$sm_cp_dir"
+cp -R "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 
 
 log "Installing launcher"
