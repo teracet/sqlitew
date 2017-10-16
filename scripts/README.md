@@ -29,6 +29,10 @@ cp -R sqlite-manager sqlite-manager-patched
 scripts/patch-sqlite-manager.sh sqlite-manager-patched
 ```
 
-**Why not store the modified source code in the repo instead of the original?** Using a script to patch the source code makes it easy to tell what has been changed from the original, and more importantly, it makes it easy to upgrade the extension in the future.
+**Why not store the modified source code in the repo instead of the original?**
 
-**Okay, then why not download the code for the extension during the build, like what happens with the Firefox code?** The Firefox source code is substantially larger in size. Not only that, but Firefox isn't going anywhere; the code is going to be available to download for a long time, whereas the extension may disappear.
+Using a script to patch the source code makes it easy to tell what has been changed from the original, and more importantly, it makes it easy to upgrade the extension in the future.
+
+**Okay, then why not download the code for the extension during the build, like what happens with the Firefox code?**
+
+The Firefox source code is downloaded during the build because it would grow the size of this repo immensly. Not only that, but Firefox isn't going anywhere; the code is going to be available to download for a long time, whereas the extension could disappear.
