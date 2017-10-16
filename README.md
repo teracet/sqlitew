@@ -2,22 +2,7 @@
 
 ## Setup
 
-On Linux, make sure you have:
-
-- curl
-- build-essentials (gcc, make, etc)
-- python2
-
-On Mac, make sure have:
-
-- brew
-- Xcode (make sure you've started it at least once)
-
-On Windows, make sure have:
-
-TODO
-
-Once you've installed those tools, run:
+First, install the tools that specified per OS below. Afterwards, run:
 
 ```bash
 ./control.sh setup
@@ -26,6 +11,31 @@ Once you've installed those tools, run:
 **Note:** you may be asked to enter your password to install the packages.
 
 Once the setup completes successfully, restart your shell.
+
+### Linux
+
+Tools:
+
+- curl
+- build-essentials (gcc, make, etc)
+- python2
+
+### Mac
+
+Tools:
+
+- brew
+- Xcode (make sure you've started it at least once)
+
+If you just installed Xcode, make you sure you start it to finish the setup, and then run:
+
+```bash
+sudo xcode-select --switch '/Applications/Xcode.app'
+```
+
+### Windows
+
+TODO
 
 ## Building
 
