@@ -23,6 +23,10 @@ Once you've installed those tools, run:
 ./control.sh setup
 ```
 
+**Note:** you may be asked to enter your password to install the packages.
+
+Once the setup completes successfully, restart your shell.
+
 ## Building
 
 To build:
