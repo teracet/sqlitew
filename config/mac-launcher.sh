@@ -14,6 +14,7 @@ BIN_DIR="`cd \"$BIN_DIR\"; pwd`"
 RES_DIR="`cd \"$RES_DIR\"; pwd`"
 
 APP_DIR="$RES_DIR/apps/sqlite-manager"
-PROFILE_DIR="$(cd "~/.teracet/sqlite-composer/profile" && pwd)"
+PROFILE_DIR="~/.teracet/sqlite-composer/profile"
 mkdir -p "$PROFILE_DIR"
+PROFILE_DIR="$(cd "$PROFILE_DIR" && pwd)"
 "$BIN_DIR/sqlite-composer-bin" --app "$APP_DIR/application.ini" --no-remote --profile "$PROFILE_DIR"
