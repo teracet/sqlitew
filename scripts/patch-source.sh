@@ -68,26 +68,31 @@ echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
 
 log "Patching installer"
 
-if [[ "$BUILD_OS" != "linux" ]] ; then
-	# Ensure our additional files are included in the generated installer.
+# Ensure our additional files are included in the generated installer.
 
-	package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
-	echo '[sqlite-composer]'                          >> "$package_manifest"
-	if [[ "$BUILD_OS" = "mac" ]] ; then
-		echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
-	fi
-	echo '@RESPATH@/apps/*'                           >> "$package_manifest"
-	echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
-	echo '@RESPATH@/defaults/pref/sqlite-composer.js' >> "$package_manifest"
-	sedi '/@BINPATH@\/@MOZ_APP_NAME@-bin/d'              "$package_manifest"
-
-	# Patch the duplicate file error caused by including the sqlite-manager
-	# extension in the installer.
-
-	allowed_dupes="$FF_SOURCE_DIR/browser/installer/allowed-dupes.mn"
-	echo 'apps/sqlite-manager/chrome/skin/default/images/close.gif' >> "$allowed_dupes"
-	echo 'chrome/toolkit/skin/classic/global/icons/Close.gif'       >> "$allowed_dupes"
+package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
+echo '[sqlite-composer]'                          >> "$package_manifest"
+if [[ ! "$BUILD_OS" = "windows" ]] ; then
+	echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
 fi
+if [[ "$BUILD_OS" = "linux" ]] ; then
+	echo '$BINPATH@/sqlite-composer.desktop'  >> "$package_manifest"
+fi
+echo '@RESPATH@/apps/*'                           >> "$package_manifest"
+echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
+echo '@RESPATH@/defaults/pref/sqlite-composer.js' >> "$package_manifest"
+sedi '/@BINPATH@\/@MOZ_APP_NAME@-bin/d'              "$package_manifest"
+
+# Patch the duplicate file error caused by including the sqlite-manager
+# extension in the installer.
+
+allowed_dupes="$FF_SOURCE_DIR/browser/installer/allowed-dupes.mn"
+echo 'apps/sqlite-manager/chrome/skin/default/images/close.gif'     >> "$allowed_dupes"
+echo 'chrome/toolkit/skin/classic/global/icons/Close.gif'           >> "$allowed_dupes"
+echo 'apps/sqlite-manager/chrome/icons/default/default16.png'       >> "$allowed_dupes"
+echo 'apps/sqlite-manager/chrome/skin/default/images/default16.png' >> "$allowed_dupes"
+echo 'apps/sqlite-manager/chrome/icons/default/default32.png'       >> "$allowed_dupes"
+echo 'apps/sqlite-manager/chrome/skin/default/images/default32.png' >> "$allowed_dupes"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	# Patch the Info.plist so that our launch script is executed instead of
