@@ -31,7 +31,7 @@ Tools:
 If you just installed Xcode, make you sure you start it to finish the setup, and then run:
 
 ```bash
-sudo xcode-select --switch '/Applications/Xcode.app'
+sudo xcode-select --switch /Applications/Xcode.app
 ```
 
 ### Windows
@@ -57,3 +57,5 @@ The packaged app can be found in `build/`.
 ## Issues
 
 - Linux: the directory "~/.sqlitecomposer" is created automatically when running the program. This seems to be related to the crash reporter being disabled.
+- Mac: the application is installed as "SQLiteComposer.app" instead of "SQLite Composer.app". `MOZ_MACBUNDLE_NAME` doesn't appear to have any effect.
+- Mac: the installer background image is missing, despite it existing in ".background/" within the dmg. May have something to do with the "dsstore" in the branding directory.
