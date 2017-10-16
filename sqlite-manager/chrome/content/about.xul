@@ -15,7 +15,7 @@
     function fillAboutValues() {
       document.getElementById("about-version").setAttribute("value", SmAppInfo.getVersion());
       document.getElementById("about-creator").setAttribute("value", SmAppInfo.getCreator());
-      document.getElementById("about-license").setAttribute("href", SmAppInfo.webpages.mpl);
+      //document.getElementById("about-license").setAttribute("href", SmAppInfo.webpages.mpl);
 
       document.getElementById("about-homepage").setAttribute("href", SmAppInfo.webpages.home);
       document.getElementById("about-homepage").setAttribute("value", SmAppInfo.webpages.home);
@@ -56,10 +56,6 @@
         <row align="center">
           <text value="&author; :"/>
           <text id="about-creator"/>
-        </row>
-        <row align="center">
-          <text value="&license; :"/>
-          <label id="about-license" class="text-link" value="&license.mpl;"/>
         </row>
       </rows>
     </grid>

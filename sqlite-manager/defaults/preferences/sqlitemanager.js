@@ -1,3 +1,6 @@
+pref("nglayout.debug.disable_xul_cache", true);
+pref("browser.preferences.instantApply", true);
+
 //localized description for this extension
 pref("extensions.{SQLiteManager@mrinalkant.blogspot.com}.description", "chrome://sqlitemanager/locale/strings.properties");
 

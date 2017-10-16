@@ -5,17 +5,15 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-var extId = "SQLiteManager@mrinalkant.blogspot.com";
+var extId = "sqlite-composer@teracet.com";
 
 var SmAppInfo = {
   appInfo: Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo),
-  extVersion: "",
-  extCreator: "lazierthanthou",
+  extVersion: "1.3.3",
+  extCreator: "Teracet Systems",
 
   webpages: {
-    home: "https://github.com/lazierthanthou/sqlite-manager",
-    faq: "https://github.com/lazierthanthou/sqlite-manager/wiki/Frequently-Asked-Questions",
-    issueNew: "https://github.com/lazierthanthou/sqlite-manager/issues/new",
+    home: "http://www.teracet.com/sqlite-composer",
     sqliteHome: "http://www.sqlite.org/",
     sqliteLang: "http://www.sqlite.org/lang.html",
     mpl: "http://www.mozilla.org/MPL/MPL-1.1.html"
@@ -28,9 +26,9 @@ var SmAppInfo = {
     else {
       try {
         Cu.import("resource://gre/modules/AddonManager.jsm");
-        AddonManager.getAddonByID(extId, function(addon) {
-SmAppInfo.extVersion = (addon || {}).version || "0.8.3";
-        });
+        //AddonManager.getAddonByID(extId, function(addon) {
+        //  SmAppInfo.extVersion = (addon || {}).version || "1.3.3";
+        //});
         //while (this.extVersion == "") {}      
       }
       catch (ex) {

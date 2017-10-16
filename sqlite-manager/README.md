@@ -10,3 +10,5 @@ The icons are located at:
 - `chrome/icons/default/default16.png`
 - `chrome/icons/default/default32.png`
 - `chrome/icons/default/default48.png`
+- `chrome/skin/default/images/default16.png`
+- `chrome/skin/default/images/default32.png`
