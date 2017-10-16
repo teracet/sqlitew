@@ -35,9 +35,15 @@ log "Installing SQLite Manager"
 # best resource I've found:
 # http://forums.mozillazine.org/viewtopic.php?p=11440295#p11440295
 
+# Copy patched source.
+
 sm_cp_dir="$ff_dist_res_dir/apps/sqlite-manager"
 mkdir -p "$sm_cp_dir"
 cp -R "$SM_SOURCE_DIR/"* "$sm_cp_dir"
+
+# Patch version.
+
+sedi "s/extVersion: \"x\.x\.x\"/extVersion: \"$SC_VERSION\"/" "$sm_cp_dir/chrome/resource/appInfo.js"
 
 
 log "Installing launcher"

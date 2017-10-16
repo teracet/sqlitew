@@ -26,7 +26,7 @@ Tools:
 Tools:
 
 - rust
-- Xcode (make sure you've started it at least once)
+- Xcode
 
 If you just installed Xcode, make you sure you start it to finish the setup, and then run:
 

@@ -9,7 +9,7 @@ var extId = "sqlite-composer@teracet.com";
 
 var SmAppInfo = {
   appInfo: Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo),
-  extVersion: "1.3.3",
+  extVersion: "x.x.x", // This gets patched by the build
   extCreator: "Teracet Systems",
 
   webpages: {
@@ -27,7 +27,7 @@ var SmAppInfo = {
       try {
         Cu.import("resource://gre/modules/AddonManager.jsm");
         //AddonManager.getAddonByID(extId, function(addon) {
-        //  SmAppInfo.extVersion = (addon || {}).version || "1.3.3";
+        //  SmAppInfo.extVersion = addon.version;
         //});
         //while (this.extVersion == "") {}      
       }
