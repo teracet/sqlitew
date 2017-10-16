@@ -20,6 +20,11 @@ cp "$REPO_CONFIG_DIR/sqlite-composer.js" "$ff_dist_res_dir/defaults/pref"
 cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_dist_res_dir"
 
 
+log "Removing extra binary"
+
+rm -f "$ff_dist_bin_dir/sqlite-composer-bin-bin"
+
+
 log "Installing SQLite Manager"
 
 # When looking for where to install extensions so that they'd be packaged with
