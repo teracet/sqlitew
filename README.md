@@ -16,15 +16,16 @@ Once the setup completes successfully, restart your shell.
 
 Tools:
 
-- curl
 - build-essentials (gcc, make, etc)
+- curl
 - python2
+- rust
 
 ### Mac
 
 Tools:
 
-- brew
+- rust
 - Xcode (make sure you've started it at least once)
 
 If you just installed Xcode, make you sure you start it to finish the setup, and then run:
