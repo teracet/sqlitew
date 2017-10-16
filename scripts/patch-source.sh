@@ -76,7 +76,7 @@ if [[ ! "$BUILD_OS" = "windows" ]] ; then
 	echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
 fi
 if [[ "$BUILD_OS" = "linux" ]] ; then
-	echo '$BINPATH@/sqlite-composer.desktop'  >> "$package_manifest"
+	echo '@BINPATH@/sqlite-composer.desktop'  >> "$package_manifest"
 fi
 echo '@RESPATH@/apps/*'                           >> "$package_manifest"
 echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
