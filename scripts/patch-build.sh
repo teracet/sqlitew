@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "$REPO_SCRIPTS_DIR/set-defaults.sh"
+. "$REPO_SCRIPTS_DIR/common.sh"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	ff_dist_bin_dir="$FF_DIST_DIR/SQLiteComposer.app/Contents/MacOS"
@@ -12,14 +13,14 @@ else
 fi
 
 
-# CONFIGURE PREFERENCES
+log "Configuring preferences"
 
 mkdir -p "$ff_dist_res_dir/defaults/pref"
 cp "$REPO_CONFIG_DIR/sqlite-composer.js" "$ff_dist_res_dir/defaults/pref"
 cp "$REPO_CONFIG_DIR/mozilla.cfg" "$ff_dist_res_dir"
 
 
-# INSTALL SQLITE MANAGER
+log "Installing SQLite Manager"
 
 # When looking for where to install extensions so that they'd be packaged with
 # the application, I found many "recommended" directories. However, I found the
@@ -40,7 +41,7 @@ cp -r "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 "$REPO_SCRIPTS_DIR/patch-sqlite-manager.sh" "$sm_cp_dir"
 
 
-# INSTALL LAUNCHER
+log "Installing launcher"
 
 if [[ "$BUILD_OS" = "linux" ]] ; then
 	cp "$REPO_CONFIG_DIR/linux-launcher.sh" "$ff_dist_bin_dir/sqlite-composer"

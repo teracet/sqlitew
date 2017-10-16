@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 if [ -z "$1" ] ; then
 	echo "Usage: $0 /path/to/sqlite-manager"
@@ -7,16 +8,10 @@ fi
 
 SM_SOURCE_DIR="$1"
 REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "$REPO_SCRIPTS_DIR/set-defaults.sh"
-
-# `sed -i` behaves differently on Linux and Mac, so this function abstracts
-# those differences.
-sedi () {
-	sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
-}
+. "$REPO_SCRIPTS_DIR/common.sh"
 
 
-# Update the branding.
+log "Patching branding"
 
 cp "$REPO_CONFIG_DIR/application.ini" "$SM_SOURCE_DIR"
 grep -rl "SQLite Manager" "$SM_SOURCE_DIR" | while read -r file ; do
@@ -30,6 +25,8 @@ cp "$REPO_ICON_DIR/icon_48x48.png" "$SM_SOURCE_DIR/chrome/icons/default/default4
 mkdir -p "$SM_SOURCE_DIR/icons"
 cp "$REPO_ICON_DIR/icon_128x128.png" "$SM_SOURCE_DIR/icons/mozicon128.png"
 
+
+log "Patching version"
 
 # Since we are not "properly" installing the extension, there is an unexpected
 # exception that gets thrown; let's patch that.

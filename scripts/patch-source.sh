@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "$REPO_SCRIPTS_DIR/set-defaults.sh"
-
-# `sed -i` behaves differently on Linux and Mac, so this function abstracts
-# those differences.
-sedi () {
-	sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
-}
+. "$REPO_SCRIPTS_DIR/common.sh"
 
 
-# PATCH: SQLite Flags
+log "Patching SQLite flags"
 
 # Firefox uses SQLite internally, and we need it compiled with the following
 # flags:
@@ -22,7 +17,7 @@ echo 'DEFINES["SQLITE_ENABLE_JSON1"] = True' >> "$FF_SOURCE_DIR/db/sqlite3/src/m
 echo 'DEFINES["SQLITE_ENABLE_RTREE"] = True' >> "$FF_SOURCE_DIR/db/sqlite3/src/moz.build"
 
 
-# PATCH: Branding
+log "Patching branding"
 
 # We will use the unofficial Firefox branding as a base.
 
@@ -64,14 +59,14 @@ if [[ "$BUILD_OS" = "windows" ]] ; then
 fi
 
 
-# PATCH: Version
+log "Patching version"
 
 echo "MOZ_APP_VERSION='$SC_VERSION'" >> "$FF_SOURCE_DIR/browser/branding/sqlite-composer/configure.sh"
 echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version.txt"
 echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
 
 
-# PATCH: Installer
+log "Patching installer"
 
 if [[ "$BUILD_OS" != "linux" ]] ; then
 	# Ensure our additional files are included in the generated installer.
@@ -121,7 +116,7 @@ if [[ "$BUILD_OS" = "windows" ]] ; then
 fi
 
 
-# PATCH: 'Disabled Updater' Bug
+log "Patching 'Disabled Updater' bug"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	# When building Firefox 54.0.1 with the updater disabled on a Mac, the
@@ -152,3 +147,8 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	  $guard_close\\
 	  " "$FF_SOURCE_DIR/browser/installer/package-manifest.in"
 fi
+
+
+log "Patching build flags"
+
+cp "$REPO_CONFIG_DIR/mozconfig" "$FF_SOURCE_DIR/mozconfig"

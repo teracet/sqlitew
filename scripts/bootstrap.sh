@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 REPO_SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "$REPO_SCRIPTS_DIR/set-defaults.sh"
+. "$REPO_SCRIPTS_DIR/common.sh"
 
 cd "$FF_SOURCE_DIR"
 
@@ -24,13 +25,13 @@ case "$BUILD_OS" in
 	mac)
 		# Part of the bootstrap process requires Xcode. If Xcode was installed but not
 		# used yet, we need to specify the app directory.
-		echo 'Selecting Xcode app directory (requires sudo privileges).'
-		sudo 'xcode-select' --switch '/Applications/Xcode.app'
+		log 'Selecting Xcode app directory (requires sudo privileges)'
+		sudo 'xcode-select' --switch '/Applications/Xcode.app' || error_exit "xcode-select failed"
 
 		# Bootstrapping fails when installing rust on a Mac, so we will install it
 		# manually ahead of time.
-		echo 'Installing rust.'
-		brew install rust
+		log 'Installing rust'
+		brew install rust || error_exit "failed to install rust"
 
 		# Responses:
 		#   2 - Build Firefox for Desktop
@@ -48,7 +49,6 @@ case "$BUILD_OS" in
 		;;
 
 	*)
-		echo "Unrecognized or unsupported OS: $BUILD_OS"
-		exit 1
+		error_exit "Unrecognized or unsupported OS: $BUILD_OS"
 		;;
 esac
