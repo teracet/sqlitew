@@ -8,9 +8,7 @@ First, install the tools that specified per OS below. Afterwards, run:
 ./control.sh setup
 ```
 
-**Note:** you may be asked to enter your password to install the packages.
-
-Once the setup completes successfully, restart your shell.
+**Note:** you may be asked to enter your password to install packages.
 
 ### Linux
 
@@ -57,6 +55,5 @@ The packaged app can be found in `build/`.
 ## Issues
 
 - Any buttons that would normally open a webpage (like clicking the link within the help menu) doesn't do anything.
-- Linux: the directory "~/.sqlitecomposer" is created automatically when running the program. This seems to be related to the crash reporter being disabled.
 - Mac: the application is installed as "SQLiteComposer.app" instead of "SQLite Composer.app". `MOZ_MACBUNDLE_NAME` doesn't appear to have any effect.
 - Mac: the installer background image is missing, despite it existing in ".background/" within the dmg. May have something to do with the "dsstore" in the branding directory.
