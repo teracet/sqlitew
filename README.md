@@ -2,7 +2,7 @@
 
 ## Setup
 
-First, install the tools that specified per OS below. Afterwards, run:
+First, install the tools that are specified per OS below. Afterwards, run:
 
 ```bash
 ./control.sh setup
@@ -10,12 +10,14 @@ First, install the tools that specified per OS below. Afterwards, run:
 
 **Note:** you may be asked to enter your password to install packages.
 
+**Note:** on Windows, `control.sh` is expected to be run using the shell provided by MozillaBuild.
+
 ### Linux
 
 Tools:
 
 - build-essentials (gcc, make, etc)
-- curl
+- curl or wget
 - python2
 - rust
 
@@ -34,7 +36,13 @@ sudo xcode-select --switch /Applications/Xcode.app
 
 ### Windows
 
-TODO
+Tools:
+
+- Visual Studio Community 2015 with Update 3 ([link](https://www.visualstudio.com/vs/older-downloads/))
+	- Check "Programming Languages -> Visual C++ -> Common Tools for Visual C++ 2015" during install
+	- Uncheck "Windows and Web Development -> (all)" during install
+- Rust
+- MozillaBuild ([direct link](https://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe))
 
 ## Building
 

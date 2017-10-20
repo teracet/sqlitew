@@ -31,7 +31,7 @@ case "$BUILD_OS" in
 	windows)
 		cd "$FF_SOURCE_DIR"
 		./mach build installer | tee "$REPO_BUILD_DIR/package.log"
-		#cp ... "$REPO_BUILD_DIR/SQLite Composer Setup $SC_VERSION.exe"
+		cp "$FF_DIST_DIR/install/sea/sqlite-composer-bin-$SC_VERSION.en-US.win32.installer.exe" "$REPO_BUILD_DIR/SQLite Composer Setup $SC_VERSION.exe"
 		;;
 
 	*)
