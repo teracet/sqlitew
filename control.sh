@@ -13,7 +13,7 @@ case "$1" in
 	setup)
 		log "Setup started."
 
-		if [ ! -d "$FF_SOURCE_DIR" ] ; then
+		if [ ! "$(ls -A "$FF_SOURCE_DIR" 2>/dev/null)" ] ; then
 			download=$(ask_yes_no "The Firefox source is required for setup. Download now (y/n)? ")
 
 			if [ "$download" = "yes" ] ; then
@@ -35,7 +35,7 @@ case "$1" in
 	build)
 		log "Build started."
 
-		if [ ! -d "$FF_SOURCE_DIR" ] ; then
+		if [ ! "$(ls -A "$FF_SOURCE_DIR" 2>/dev/null)" ] ; then
 			download=$(ask_yes_no "Firefox source is missing. Download now (y/n)? ")
 
 			if [ "$download" = "yes" ] ; then
