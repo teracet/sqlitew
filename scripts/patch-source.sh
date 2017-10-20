@@ -37,6 +37,8 @@ echo 'MOZ_APP_NAME="sqlite-composer-bin"' >> "$ff_branding_dir/configure.sh" # I
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	#echo 'MOZ_MACBUNDLE_NAME="SQLite Composer.app"' >> "$BRANDING_DIR/configure.sh" # Doesn't work
+	cp "$REPO_CONFIG_DIR/dsstore" "$ff_branding_dir/dsstore"
+	cp "$REPO_ICON_DIR/mac/background.png" "$ff_branding_dir/background.png"
 	cp "$REPO_ICON_DIR/mac/firefox.icns" "$ff_branding_dir/firefox.icns"
 fi
 
