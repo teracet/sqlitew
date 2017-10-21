@@ -208,6 +208,11 @@ SmGlobals.openURL = function(UrlToGoTo) {
   var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
   var uri = ios.newURI(UrlToGoTo, null, null);
   var protocolSvc = Cc["@mozilla.org/uriloader/external-protocol-service;1"].getService(Ci.nsIExternalProtocolService);
+    
+  sm_prefsBranch.setBoolPref("network.protocol-handler.warn-external.http", false);
+  sm_prefsBranch.setBoolPref("network.protocol-handler.warn-external.https", false);
+  protocolSvc.loadUrl(uri);
+  return;
 
   if (!protocolSvc.isExposedProtocol(uri.scheme)) {
     // If we're not a browser, use the external protocol service to load the URI.
