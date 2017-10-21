@@ -10,6 +10,7 @@
   buttonlabelaccept="OK" buttonaccesskeyaccept="O"
   ondialogaccept="window.close();" onload="fillAboutValues();">
 
+  <script type="application/x-javascript" src="globals.js"/>
   <script type="application/x-javascript">
     Components.utils.import("resource://sqlitemanager/appInfo.js");
     function fillAboutValues() {
@@ -38,7 +39,7 @@
         <row align="center">
           <image id="about-icon"/>
           <vbox>
-            <label id="about-homepage" class="text-link" />
+            <label id="about-homepage" class="text-link" onclick="SmGlobals.openURL(this.getAttribute('href'));" />
           </vbox>
         </row>
       </rows>

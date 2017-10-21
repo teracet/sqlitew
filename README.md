@@ -62,7 +62,6 @@ The packaged app can be found in `build/`.
 
 ## Issues
 
-- Any buttons that would normally open a webpage (like clicking the link within the help menu) doesn't do anything.
 - Mac: the application is installed as "SQLiteComposer.app" instead of "SQLite Composer.app". `MOZ_MACBUNDLE_NAME` doesn't appear to have any effect.
 
 ## Customizing the Mac Installer
