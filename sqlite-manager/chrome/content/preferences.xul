@@ -13,7 +13,7 @@
   <script type="application/x-javascript" src="globals.js"/>  
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("load", sm_setCurrentSettings, false);
+    // window.addEventListener("load", sm_setCurrentSettings, false);
   ]]>
   </script>
 
@@ -35,7 +35,7 @@
         name="extensions.sqlitemanager.tableForExtensionManagement" type="string"/>
       <preference id="pref-identifierQuoteChar" name="extensions.sqlitemanager.identifierQuoteChar" type="string"/>
     </preferences>
-    <groupbox>
+    <groupbox hidden='true'>
       <caption label="&pref-openMode.label;"/>
       <radiogroup id="rg-openMode" value="1" preference="pref-openMode">
         <radio label="&pref-openMode-win;" value="1" selected="true" accesskey="&pref-openMode-win.ak;"/>
@@ -79,7 +79,7 @@
             <spacer flex="1"/>
         <textbox id="tb-tableForExtensionManagement" flex="1" preference="pref-tableForExtensionManagement"/>
         </hbox>
-      <groupbox>
+      <groupbox hidden='true'>
       <caption label="&pref-openADS.label;"/>
       <radiogroup id="rg-openADS" preference="pref-openADS">
        <hbox>
@@ -139,7 +139,7 @@
           <checkbox id="cb-showMainToolbarDatabase" label="&pref-showMainToolbarDatabase.label;" style="padding-left:20px" preference="pref-showMainToolbarDatabase" checked="true"/>
           <checkbox id="cb-showMainToolbarTable" label="&pref-showMainToolbarTable.label;" style="padding-left:20px" preference="pref-showMainToolbarTable" checked="true"/>
           <checkbox id="cb-showMainToolbarIndex" label="&pref-showMainToolbarIndex.label;" style="padding-left:20px" preference="pref-showMainToolbarIndex" checked="true"/>
-          <checkbox id="cb-showMainToolbarDebug" label="&pref-showMainToolbarDebug.label;" style="padding-left:20px" preference="pref-showMainToolbarDebug"/>
+          <checkbox id="cb-showMainToolbarDebug" label="&pref-showMainToolbarDebug.label;" style="padding-left:20px" preference="pref-showMainToolbarDebug" hidden='true'/>
         </groupbox>
 
         <hbox>
@@ -204,109 +204,5 @@
         </groupbox>
       </prefpane>
 
-      <prefpane id="datatree-options" label="&paneDatatree.title;">
-        <preferences>
-          <preference id="pref-dataTreeStyle" name="extensions.sqlitemanager.dataTreeStyle" type="string"/>
-        </preferences>
-
-        <grid>
-          <columns>
-            <column style="padding: 2px 15px;"/>
-            <column style="padding: 2px 15px;"/>
-            <column style="padding: 6px;" flex="1"/>
-            <column style="padding: 6px;" flex="1"/>
-          </columns>
-          <rows>
-            <row align="center">
-              <label value="&paneDatatree.datatype;"/>
-              <label value="&paneDatatree.property;"/>
-              <label value="&paneDatatree.unselected;"/>
-              <label value="&paneDatatree.selected;"/>
-            </row>
-            <row align="center">
-              <html:hr/>
-              <html:hr/>
-              <html:hr/>
-              <html:hr/>
-            </row>
-            <row align="center">
-              <label value="&paneDatatree.typeNull;"/>
-              <label value="&paneDatatree.textColor;"/>
-              <colorpicker mktpref="dataTreeStyle.nullvalue.unselected.color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.nullvalue.selected.color" type="button"/>
-            </row>
-            <row align="center">
-              <label value=""/>
-              <label value="&paneDatatree.backgroundColor;"/>
-              <colorpicker mktpref="dataTreeStyle.nullvalue.unselected.background-color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.nullvalue.selected.background-color" type="button"/>
-            </row>
-            <row align="center">
-              <label value="&paneDatatree.typeInteger;"/>
-              <label value="&paneDatatree.textColor;"/>
-              <colorpicker mktpref="dataTreeStyle.integervalue.unselected.color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.integervalue.selected.color" type="button"/>
-            </row>
-            <row align="center">
-              <label value=""/>
-              <label value="&paneDatatree.backgroundColor;"/>
-              <colorpicker mktpref="dataTreeStyle.integervalue.unselected.background-color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.integervalue.selected.background-color" type="button"/>
-            </row>
-            <row align="center">
-              <label value="&paneDatatree.typeReal;"/>
-              <label value="&paneDatatree.textColor;"/>
-              <colorpicker mktpref="dataTreeStyle.floatvalue.unselected.color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.floatvalue.selected.color" type="button"/>
-            </row>
-            <row align="center">
-              <label value=""/>
-              <label value="&paneDatatree.backgroundColor;"/>
-              <colorpicker mktpref="dataTreeStyle.floatvalue.unselected.background-color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.floatvalue.selected.background-color" type="button"/>
-            </row>
-            <row align="center">
-              <label value="&paneDatatree.typeText;"/>
-              <label value="&paneDatatree.textColor;"/>
-              <colorpicker mktpref="dataTreeStyle.textvalue.unselected.color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.textvalue.selected.color" type="button"/>
-            </row>
-            <row align="center">
-              <label value=""/>
-              <label value="&paneDatatree.backgroundColor;"/>
-              <colorpicker mktpref="dataTreeStyle.textvalue.unselected.background-color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.textvalue.selected.background-color" type="button"/>
-            </row>
-            <row align="center">
-              <label value="&paneDatatree.typeBlob;"/>
-              <label value="&paneDatatree.textColor;"/>
-              <colorpicker mktpref="dataTreeStyle.blobvalue.unselected.color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.blobvalue.selected.color" type="button"/>
-            </row>
-            <row align="center">
-              <label value=""/>
-              <label value="&paneDatatree.backgroundColor;"/>
-              <colorpicker mktpref="dataTreeStyle.blobvalue.unselected.background-color" type="button"/>
-              <colorpicker mktpref="dataTreeStyle.blobvalue.selected.background-color" type="button"/>
-            </row>
-          </rows>
-        </grid>
-        <hbox>
-          <label value="&paneDatatree.fontSize;"/>
-          <textbox type="number" min="25" max="500" value="100" mktpref="dataTreeStyle.textFont.unselected.font-size"/>
-        </hbox>
-        <hbox>
-          <label value="&paneDatatree.fontFamily;"/>
-          <textbox value="" mktpref="dataTreeStyle.textFont.unselected.font-family"/>
-        </hbox>
-        <hbox>
-          <label value="&paneDatatree.rowHeight;"/>
-          <textbox type="number" min="0" max="300" value="0" mktpref="dataTreeStyle.rowHeight"/>
-        </hbox>
-        <hbox style="text-align:right;">
-          <button id="btnTreeStyleDefault" label="&paneDatatree.btnSetDefault;" oncommand="sm_setDataTreeStyle('default')" />
-          <button id="btnTreeStyleNone" label="&paneDatatree.btnNone;" oncommand="sm_setDataTreeStyle('none')" />
-          <button id="btnTreeStyleApply" label="&paneDatatree.btnApply;" oncommand="sm_setDataTreeStyle('user')" />
-        </hbox>
-      </prefpane>
+      
 </prefwindow>
