@@ -19,7 +19,7 @@ mkdir -p "$FF_SOURCE_DIR"
 cd "$REPO_BUILD_DIR"
 
 log "Downloading Firefox source"
-#$download_cmd "$file" "$download_url"
+$download_cmd "$file" "$download_url"
 
 log "Unpacking Firefox source"
 if [[ "$BUILD_OS" = "windows" ]] ; then
