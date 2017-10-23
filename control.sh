@@ -3,7 +3,7 @@ set -euo pipefail
 
 # To see what variables can be configured, see `scripts/set-defaults.sh`
 
-export SC_VERSION=1.3.3
+export SC_VERSION=1.3.4
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SCRIPTS_DIR="$REPO_DIR/scripts"
