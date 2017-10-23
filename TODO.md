@@ -6,7 +6,7 @@
 
 ## Windows
 
-Nothing.
+- Uninstaller doesn't have an icon
 
 ## Mac
 
