@@ -60,10 +60,6 @@ To package:
 
 The packaged app can be found in `build/`.
 
-## Issues
-
-- Mac: the application is installed as "SQLiteComposer.app" instead of "SQLite Composer.app". `MOZ_MACBUNDLE_NAME` doesn't appear to have any effect.
-
 ## Customizing the Mac Installer
 
 If you need to update the background image, then editing `icons/mac/background.png` will do just fine (make sure the image has 72 dpi). However, if you need to change any sizing or positioning of items in the installer, you'll need to create a new `config/dsstore`.
