@@ -310,8 +310,8 @@
       <toolbar id="sm-toolbar-profileDB">
         <menu id="menu-DbList" label="&dir;" tooltiptext="&dir;">
           <menupopup>
-          <menuitem label="&profileDir;" type="radio" name="menu-defaultDir" checked="true" oncommand="SQLiteManager.populateDBList('profile');"/>
-          <menuitem label="&userDir;" type="radio" name="menu-defaultDir" oncommand="SQLiteManager.populateDBList('user');"/>
+          <menuitem label="&profileDir;" type="radio" name="menu-defaultDir" oncommand="SQLiteManager.populateDBList('profile');" hidden="true"/>
+          <menuitem label="&userDir;" type="radio" name="menu-defaultDir" checked="true" oncommand="SQLiteManager.populateDBList('user');"/>
           <menuseparator/>
           <menuitem label="&selectUserDir;" oncommand="SQLiteManager.selectDefaultDir();"/>
           </menupopup>
