@@ -109,6 +109,10 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 
 	awk "{print (f?\"$value\":\$0); f=0} /$key/{f=1}" "$file" > "$file.tmp"
 	mv "$file.tmp" "$file"
+
+	# Replace make_dmg.py with our patched version that takes care of the
+	# code signing.
+	cp "$REPO_CONFIG_DIR/make_dmg.py" "$FF_SOURCE_DIR/python/mozbuild/mozbuild/action/make_dmg.py"
 fi
 
 if [[ "$BUILD_OS" = "windows" ]] ; then
