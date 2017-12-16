@@ -97,18 +97,10 @@ echo 'apps/sqlite-manager/chrome/icons/default/default32.png'       >> "$allowed
 echo 'apps/sqlite-manager/chrome/skin/default/images/default32.png' >> "$allowed_dupes"
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
-	# Patch the Info.plist so that our launch script is executed instead of
-	# directly executing the binary.
-	# The awk command looks for the key ([<key>]CFBundleExecutable[</key>]),
-	# and sets the value (the following line) with the name of the launcher
-	# script.
-
-	file="$FF_SOURCE_DIR/browser/app/macbuild/Contents/Info.plist.in"
-	key='CFBundleExecutable'
-	value='<string>sqlite-composer</string>'
-
-	awk "{print (f?\"$value\":\$0); f=0} /$key/{f=1}" "$file" > "$file.tmp"
-	mv "$file.tmp" "$file"
+	# Replace Info.plist.in with our patched version, which includes:
+	#  + Fixed executable name
+	#  + Removed file/url associations
+	cp "$REPO_CONFIG_DIR/Info.plist.in" "$FF_SOURCE_DIR/browser/app/macbuild/Contents/Info.plist.in"
 
 	# Replace make_dmg.py with our patched version that takes care of the
 	# code signing.
