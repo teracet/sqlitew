@@ -364,7 +364,7 @@ var SQLiteManager = {
           this.maFileExt[iC] = this.maFileExt[iC].trim();
         }
         // Load profile folder's sqlite db files list into dropdown
-        this.populateDBList("profile");
+        this.populateDBList("user");
         break;
       case "searchToggler":
         var sPrefVal = sm_prefsBranch.getCharPref("searchCriteria", "");
