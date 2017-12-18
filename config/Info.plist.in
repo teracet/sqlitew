@@ -6,8 +6,13 @@
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
 	<array></array>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>XUL_APP_FILE</key>
+		<string>/Applications/SQLiteComposer.app/Contents/Resources/apps/sqlite-manager/application.ini</string>
+	</dict>
 	<key>CFBundleExecutable</key>
-	<string>sqlite-composer</string>
+	<string>sqlite-composer-bin</string>
 	<key>CFBundleGetInfoString</key>
 	<string>%MAC_APP_NAME% %APP_VERSION%</string>
 	<key>CFBundleIconFile</key>
