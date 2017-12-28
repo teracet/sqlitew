@@ -43,7 +43,7 @@ cp -R "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 
 # Patch version.
 
-sedi "s/extVersion: \"x\.x\.x\"/extVersion: \"$SC_VERSION\"/" "$sm_cp_dir/chrome/resource/appInfo.js"
+sedi "s/extVersion: \"x\.x\.x\"/extVersion: \"$SW_VERSION\"/" "$sm_cp_dir/chrome/resource/appInfo.js"
 
 
 log "Installing launcher"

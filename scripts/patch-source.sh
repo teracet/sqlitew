@@ -63,9 +63,9 @@ fi
 
 log "Patching version"
 
-echo "MOZ_APP_VERSION='$SC_VERSION'" >> "$FF_SOURCE_DIR/browser/branding/sqlite-writer/configure.sh"
-echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version.txt"
-echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
+echo "MOZ_APP_VERSION='$SW_VERSION'" >> "$FF_SOURCE_DIR/browser/branding/sqlite-writer/configure.sh"
+echo "$SW_VERSION" > "$FF_SOURCE_DIR/browser/config/version.txt"
+echo "$SW_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
 
 
 log "Patching installer"

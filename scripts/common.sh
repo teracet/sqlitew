@@ -17,7 +17,7 @@ set -euo pipefail
 #   REPO_ICON_DIR      (default: $REPO_DIR/icons)
 #   REPO_NSIS_DIR      (default: $REPO_DIR/nsis)
 #   REPO_SCRIPTS_DIR   (default: $REPO_DIR/scripts)
-#   SC_VERSION         SQLite Writer version (default: 0.0.0)
+#   SW_VERSION         SQLite Writer version (default: 0.0.0)
 #   SM_SOURCE_DIR      (default: $REPO_DIR/sqlite-manager)
 #
 # Functions:
@@ -39,7 +39,7 @@ REPO_CONFIG_DIR="${REPO_CONFIG_DIR:-$REPO_DIR/config}"
 REPO_ICON_DIR="${REPO_ICON_DIR:-$REPO_DIR/icons}"
 REPO_NSIS_DIR="${REPO_NSIS_DIR:-$REPO_DIR/nsis}"
 REPO_SCRIPTS_DIR="${REPO_SCRIPTS_DIR:-$REPO_DIR/scripts}"
-SC_VERSION="${SC_VERSION:-0.0.0}"
+SW_VERSION="${SW_VERSION:-0.0.0}"
 SM_SOURCE_DIR="${SM_SOURCE_DIR:-$REPO_DIR/sqlite-manager}"
 
 log () {
