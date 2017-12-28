@@ -155,3 +155,12 @@ fi
 log "Patching build flags"
 
 cp "$REPO_CONFIG_DIR/mozconfig" "$FF_SOURCE_DIR/mozconfig"
+
+if [[ "$BUILD_OS" = "mac" ]] ; then
+	# 'com.teracet.sqlite writer' is not a valid bundle ID, so let's replace
+	# the space with a dash.
+
+	local srcLine="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]'`"
+	local newLine="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]' | tr ' ' '-'`"
+	sedi "s/$srcLine/$newLine/" "$FF_SOURCE_DIR/old-configure.in"
+fi
