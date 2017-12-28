@@ -74,7 +74,7 @@ Usage: $(basename $0) command
 Commands:
   setup         Install packages needed to build Firefox.
   build         Download, patch, compile, and configure Firefox as SQLite
-                Composer.
+                Writer.
   package       Package the app either as an installer (Mac/Windows) or as a
                 tarball (Linux).
 EOF

@@ -10,14 +10,14 @@ set -euo pipefail
 #   FF_SOURCE_DIR      Absolute path to directory where Firefox source will be
 #                       downloaded to (default: $REPO_DIR/build/source)
 #   FF_DIST_DIR        Absolute path to directory where Firefox build will be
-#                       (default: $FF_SOURCE_DIR/obj-sqlite-composer/dist)
+#                       (default: $FF_SOURCE_DIR/obj-sqlite-writer/dist)
 #   FF_VERSION         Firefox version (default: 54.0.1)
 #   REPO_BUILD_DIR     (default: $REPO_DIR/build)
 #   REPO_CONFIG_DIR    (default: $REPO_DIR/config)
 #   REPO_ICON_DIR      (default: $REPO_DIR/icons)
 #   REPO_NSIS_DIR      (default: $REPO_DIR/nsis)
 #   REPO_SCRIPTS_DIR   (default: $REPO_DIR/scripts)
-#   SC_VERSION         SQLite Composer version (default: 0.0.0)
+#   SC_VERSION         SQLite Writer version (default: 0.0.0)
 #   SM_SOURCE_DIR      (default: $REPO_DIR/sqlite-manager)
 #
 # Functions:
@@ -32,7 +32,7 @@ REPO_DIR="${REPO_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
 BUILD_OS="${BUILD_OS:-`$REPO_SCRIPTS_DIR/detect-os.sh`}"
 FF_SOURCE_DIR="${FF_SOURCE_DIR:-$REPO_DIR/build/source}"
-FF_DIST_DIR="${FF_DIST_DIR:-$FF_SOURCE_DIR/obj-sqlite-composer/dist}"
+FF_DIST_DIR="${FF_DIST_DIR:-$FF_SOURCE_DIR/obj-sqlite-writer/dist}"
 FF_VERSION="${FF_VERSION:-54.0.1}"
 REPO_BUILD_DIR="${REPO_BUILD_DIR:-$REPO_DIR/build}"
 REPO_CONFIG_DIR="${REPO_CONFIG_DIR:-$REPO_DIR/config}"

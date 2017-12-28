@@ -12,10 +12,10 @@ MOZ_DISTRIBUTION_ID="com.teracet"
 mk_add_options AUTOCLOBBER=1
 
 # Specify the build dir
-mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-sqlite-composer
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-sqlite-writer
 
 # Set the branding
-ac_add_options --with-branding=browser/branding/sqlite-composer
+ac_add_options --with-branding=browser/branding/sqlite-writer
 
 # Disable unwanted services
 ac_add_options --disable-debug
