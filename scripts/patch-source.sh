@@ -160,7 +160,7 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	# 'com.teracet.sqlite writer' is not a valid bundle ID, so let's replace
 	# the space with a dash.
 
-	src_line="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]'`"
-	new_line="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]' | tr ' ' '-'`"
+	src_line="MOZ_MACBUNDLE_ID=`echo \\\$MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]'`"
+	new_line="MOZ_MACBUNDLE_ID=`echo \\\$MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]' | tr ' ' '-'`"
 	sedi "s/$src_line/$new_line/" "$FF_SOURCE_DIR/old-configure.in"
 fi
