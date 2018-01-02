@@ -107,6 +107,7 @@ Finally, save the new `.DS_Store`, detach the disk image, delete the temporary d
 cp "/Volumes/SQLite Writer/.DS_Store" config/dsstore
 hdiutil detach "/Volumes/SQLite Writer"
 rm "build/SQLite Writer 0.0.0 rw.dmg"
+rm -rf build/source
 ./control.sh build
 ./control.sh package
 ```
