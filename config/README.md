@@ -8,4 +8,4 @@ This directory contains the configuration files needed to patch Firefox.
 - `mac-launcher.sh` is the launcher script for Mac.
 - `mozconfig` contains Firefox build flags.
 - `mozilla.cfg` contains Firefox preferences.
-- `sqlite-composer.js` tells Firefox where to find the preferences file.
+- `sqlite-writer.js` tells Firefox where to find the preferences file.

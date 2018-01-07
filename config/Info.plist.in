@@ -9,10 +9,10 @@
 	<key>LSEnvironment</key>
 	<dict>
 		<key>XUL_APP_FILE</key>
-		<string>/Applications/SQLiteComposer.app/Contents/Resources/apps/sqlite-manager/application.ini</string>
+		<string>/Applications/SQLiteWriter.app/Contents/Resources/apps/sqlite-manager/application.ini</string>
 	</dict>
 	<key>CFBundleExecutable</key>
-	<string>sqlite-composer-bin</string>
+	<string>sqlite-writer-bin</string>
 	<key>CFBundleGetInfoString</key>
 	<string>%MAC_APP_NAME% %APP_VERSION%</string>
 	<key>CFBundleIconFile</key>

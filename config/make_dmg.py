@@ -22,12 +22,12 @@ def make_dmg(source_directory, output_dmg):
     ]
     volume_name = build.substs['MOZ_APP_DISPLAYNAME']
     need_signing = [
-        'SQLiteComposer.app/Contents/MacOS/plugin-container.app',
-        'SQLiteComposer.app/Contents/MacOS/sqlite-composer-bin',
-        'SQLiteComposer.app/Contents/MacOS/pingsender',
-        'SQLiteComposer.app/Contents/MacOS/*.dylib',
-        'SQLiteComposer.app/Contents/MacOS/XUL',
-        'SQLiteComposer.app',
+        'SQLiteWriter.app/Contents/MacOS/plugin-container.app',
+        'SQLiteWriter.app/Contents/MacOS/sqlite-writer-bin',
+        'SQLiteWriter.app/Contents/MacOS/pingsender',
+        'SQLiteWriter.app/Contents/MacOS/*.dylib',
+        'SQLiteWriter.app/Contents/MacOS/XUL',
+        'SQLiteWriter.app',
     ]
     for rel_path in need_signing:
         print('Signing ' + rel_path + ' ...')

@@ -14,4 +14,4 @@ BIN_DIR="`cd \"$BIN_DIR\"; pwd`"
 RES_DIR="`cd \"$RES_DIR\"; pwd`"
 
 APP_DIR="$RES_DIR/apps/sqlite-manager"
-"$BIN_DIR/sqlite-composer-bin" --app "$APP_DIR/application.ini"
+"$BIN_DIR/sqlite-writer-bin" --app "$APP_DIR/application.ini"

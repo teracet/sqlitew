@@ -3,7 +3,7 @@ set -euo pipefail
 
 # To see what variables can be configured, see `scripts/set-defaults.sh`
 
-export SC_VERSION=1.3.4
+export SW_VERSION=1.3.5
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SCRIPTS_DIR="$REPO_DIR/scripts"
@@ -74,7 +74,7 @@ Usage: $(basename $0) command
 Commands:
   setup         Install packages needed to build Firefox.
   build         Download, patch, compile, and configure Firefox as SQLite
-                Composer.
+                Writer.
   package       Package the app either as an installer (Mac/Windows) or as a
                 tarball (Linux).
 EOF

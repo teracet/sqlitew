@@ -21,35 +21,35 @@ log "Patching branding"
 
 # We will use the unofficial Firefox branding as a base.
 
-ff_branding_dir="$FF_SOURCE_DIR/browser/branding/sqlite-composer"
+ff_branding_dir="$FF_SOURCE_DIR/browser/branding/sqlite-writer"
 cp -r "$FF_SOURCE_DIR/browser/branding/unofficial" "$ff_branding_dir"
 
 # Update any references to "Firefox" or "Mozilla", and overwrite branding
 # images. Note that some windows installer files (.nsi) are patched in this
 # section.
 
-sedi 's/"Nightly"/"SQLite Composer"/'        "$ff_branding_dir/locales/en-US/brand.dtd"
-sedi 's/=Nightly/=SQLite Composer/'          "$ff_branding_dir/locales/en-US/brand.properties"
+sedi 's/"Nightly"/"SQLite Writer"/'        "$ff_branding_dir/locales/en-US/brand.dtd"
+sedi 's/=Nightly/=SQLite Writer/'          "$ff_branding_dir/locales/en-US/brand.properties"
 sedi 's/"Mozilla"/"Teracet"/'                "$ff_branding_dir/locales/en-US/brand.dtd"
 sedi 's/=Mozilla/=Teracet/'                  "$ff_branding_dir/locales/en-US/brand.properties"
-sedi 's/Nightly/"SQLite Composer"/'          "$ff_branding_dir/configure.sh"
-echo 'MOZ_APP_NAME="sqlite-composer-bin"' >> "$ff_branding_dir/configure.sh" # Is this only needed on Windows?
+sedi 's/Nightly/"SQLite Writer"/'          "$ff_branding_dir/configure.sh"
+echo 'MOZ_APP_NAME="sqlite-writer-bin"' >> "$ff_branding_dir/configure.sh" # Is this only needed on Windows?
 
 if [[ "$BUILD_OS" = "mac" ]] ; then
-	#echo 'MOZ_MACBUNDLE_NAME="SQLite Composer.app"' >> "$BRANDING_DIR/configure.sh" # Doesn't work
+	#echo 'MOZ_MACBUNDLE_NAME="SQLite Writer.app"' >> "$BRANDING_DIR/configure.sh" # Doesn't work
 	cp "$REPO_CONFIG_DIR/dsstore" "$ff_branding_dir/dsstore"
 	cp "$REPO_ICON_DIR/mac/background.png" "$ff_branding_dir/background.png"
 	cp "$REPO_ICON_DIR/mac/firefox.icns" "$ff_branding_dir/firefox.icns"
 fi
 
 if [[ "$BUILD_OS" = "windows" ]] ; then
-	sedi 's/"Mozilla Developer Preview"/"SQLite Composer"/' "$ff_branding_dir/branding.nsi"
+	sedi 's/"Mozilla Developer Preview"/"SQLite Writer"/' "$ff_branding_dir/branding.nsi"
 	sedi 's/"mozilla.org"/"teracet.com"/'                   "$ff_branding_dir/branding.nsi"
 
 	ff_nsis_dir="$FF_SOURCE_DIR/browser/installer/windows/nsis"
-	sedi 's/Mozilla Firefox/SQLite Composer/'                  "$ff_nsis_dir/../app.tag"
-	sedi 's/FirefoxMessageWindow/SQLiteComposerMessageWindow/' "$ff_nsis_dir/defines.nsi.in"
-	sedi 's/Firefox/SQLite Composer/'                          "$ff_nsis_dir/defines.nsi.in"
+	sedi 's/Mozilla Firefox/SQLite Writer/'                  "$ff_nsis_dir/../app.tag"
+	sedi 's/FirefoxMessageWindow/SQLiteWriterMessageWindow/' "$ff_nsis_dir/defines.nsi.in"
+	sedi 's/Firefox/SQLite Writer/'                          "$ff_nsis_dir/defines.nsi.in"
 	sedi 's/\\Mozilla/\\Teracet/'                              "$FF_SOURCE_DIR/toolkit/mozapps/installer/windows/nsis/common.nsh"
 
 	cp "$REPO_ICON_DIR/windows/firefox.ico"            "$ff_branding_dir/firefox.ico"
@@ -63,9 +63,9 @@ fi
 
 log "Patching version"
 
-echo "MOZ_APP_VERSION='$SC_VERSION'" >> "$FF_SOURCE_DIR/browser/branding/sqlite-composer/configure.sh"
-echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version.txt"
-echo "$SC_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
+echo "MOZ_APP_VERSION='$SW_VERSION'" >> "$FF_SOURCE_DIR/browser/branding/sqlite-writer/configure.sh"
+echo "$SW_VERSION" > "$FF_SOURCE_DIR/browser/config/version.txt"
+echo "$SW_VERSION" > "$FF_SOURCE_DIR/browser/config/version_display.txt"
 
 
 log "Patching installer"
@@ -73,16 +73,16 @@ log "Patching installer"
 # Ensure our additional files are included in the generated installer.
 
 package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
-echo '[sqlite-composer]'                          >> "$package_manifest"
+echo '[sqlite-writer]'                          >> "$package_manifest"
 if [[ ! "$BUILD_OS" = "windows" ]] ; then
-	echo '@BINPATH@/sqlite-composer'          >> "$package_manifest"
+	echo '@BINPATH@/sqlite-writer'          >> "$package_manifest"
 fi
 if [[ "$BUILD_OS" = "linux" ]] ; then
-	echo '@BINPATH@/sqlite-composer.desktop'  >> "$package_manifest"
+	echo '@BINPATH@/sqlite-writer.desktop'  >> "$package_manifest"
 fi
 echo '@RESPATH@/apps/*'                           >> "$package_manifest"
 echo '@RESPATH@/mozilla.cfg'                      >> "$package_manifest"
-echo '@RESPATH@/defaults/pref/sqlite-composer.js' >> "$package_manifest"
+echo '@RESPATH@/defaults/pref/sqlite-writer.js' >> "$package_manifest"
 sedi '/@BINPATH@\/@MOZ_APP_NAME@-bin/d'              "$package_manifest"
 
 # Patch the duplicate file error caused by including the sqlite-manager
@@ -160,7 +160,7 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	# 'com.teracet.sqlite writer' is not a valid bundle ID, so let's replace
 	# the space with a dash.
 
-	local srcLine="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]'`"
-	local newLine="MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]' | tr ' ' '-'`"
-	sedi "s/$srcLine/$newLine/" "$FF_SOURCE_DIR/old-configure.in"
+	src_line="MOZ_MACBUNDLE_ID=`echo \\\$MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]'`"
+	new_line="MOZ_MACBUNDLE_ID=`echo \\\$MOZ_APP_DISPLAYNAME | tr '[A-Z]' '[a-z]' | tr ' ' '-'`"
+	sedi "s/$src_line/$new_line/" "$FF_SOURCE_DIR/old-configure.in"
 fi
