@@ -65,6 +65,10 @@ case "$1" in
 	package)
 		log "Packaging started."
 		"$REPO_SCRIPTS_DIR/package.sh" || error_exit "Failed to package."
+		if [ "$BUILD_OS" = "mac" ] ; then
+			log "Repackaing for mac app store."
+			"$REPO_SCRIPTS_DIR/repackage-dmg-as-pkg.sh" || error_exit "Failed to repackage."
+		fi
 		log "Packaging was successful; see build/ directory."
 		;;
 
