@@ -20,8 +20,10 @@ set -euo pipefail
 #   SIGNING_ENTITLEMENTS   Absolute path to entitlements plist file used to sign
 #                           code on macOS
 #                           (default: $REPO_CONFIG_DIR/entitlements.plist)
-#   SIGNING_IDENTITY       Common name of certificate within keychain used to
-#                           sign code on macOS (default: -)
+#   SIGNING_IDENTITY_A     Common name of certificate within keychain used to
+#                           sign application code on macOS (default: -)
+#   SIGNING_IDENTITY_I     Common name of certificate within keychain used to
+#                           sign installers on macOS (default: -)
 #   SIGNING_PASSWORD       Password for unlocking the keychain to allow code
 #                           signing. Only used on macOS (no default).
 #   SW_VERSION             SQLite Writer version (default: 0.0.0)
@@ -47,7 +49,8 @@ export REPO_ICON_DIR="${REPO_ICON_DIR:-$REPO_DIR/icons}"
 export REPO_NSIS_DIR="${REPO_NSIS_DIR:-$REPO_DIR/nsis}"
 export REPO_SCRIPTS_DIR="${REPO_SCRIPTS_DIR:-$REPO_DIR/scripts}"
 export SIGNING_ENTITLEMENTS="${SIGNING_ENTITLEMENTS:-$REPO_CONFIG_DIR/entitlements.plist}"
-export SIGNING_IDENTITY="${SIGNING_IDENTITY:--}"
+export SIGNING_IDENTITY_A="${SIGNING_IDENTITY_A:--}"
+export SIGNING_IDENTITY_I="${SIGNING_IDENTITY_I:--}"
 export SIGNING_PASSWORD="${SIGNING_PASSWORD:-}"
 export SW_VERSION="${SW_VERSION:-0.0.0}"
 export SM_SOURCE_DIR="${SM_SOURCE_DIR:-$REPO_DIR/sqlite-manager}"

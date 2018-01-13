@@ -42,7 +42,7 @@ def make_dmg(source_directory, output_dmg):
     for rel_path in need_signing:
         print_flush('Signing ' + rel_path + ' ...')
         abs_path = os.path.join(os.getcwd(), source_directory, rel_path)
-        os.system('codesign --force --sign "$SIGNING_IDENTITY" --entitlements "$SIGNING_ENTITLEMENTS" ' + abs_path)
+        os.system('codesign --force --sign "$SIGNING_IDENTITY_A" --entitlements "$SIGNING_ENTITLEMENTS" ' + abs_path)
     dmg.create_dmg(source_directory, output_dmg, volume_name, extra_files)
 
 
