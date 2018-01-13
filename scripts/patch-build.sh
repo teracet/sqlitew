@@ -46,13 +46,10 @@ cp -R "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 sedi "s/extVersion: \"x\.x\.x\"/extVersion: \"$SW_VERSION\"/" "$sm_cp_dir/chrome/resource/appInfo.js"
 
 
-log "Installing launcher"
+# Install launcher (if necessary).
 
 if [[ "$BUILD_OS" = "linux" ]] ; then
+	log "Installing launcher"
 	cp "$REPO_CONFIG_DIR/linux-launcher.sh" "$ff_dist_bin_dir/sqlite-writer"
 	cp "$REPO_CONFIG_DIR/linux-launcher.desktop" "$ff_dist_bin_dir/sqlite-writer.desktop"
-fi
-
-if [[ "$BUILD_OS" = "mac" ]] ; then
-	cp "$REPO_CONFIG_DIR/mac-launcher.sh" "$ff_dist_bin_dir/sqlite-writer"
 fi

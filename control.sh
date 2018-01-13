@@ -3,7 +3,8 @@ set -euo pipefail
 
 # To see what variables can be configured, see `scripts/set-defaults.sh`
 
-export SW_VERSION=1.3.5
+SIGNING_IDENTITY='3rd Party Mac Developer Application: Adrien Gilmore (7BUQJW3EMM)'
+SW_VERSION=1.3.5
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SCRIPTS_DIR="$REPO_DIR/scripts"
@@ -63,6 +64,14 @@ case "$1" in
 		;;
 
 	package)
+		if [ "$BUILD_OS" = "mac" ] ; then
+			log "Packaging for mac involves code signing. In order to do this, we'll need access to the keychain."
+			stty -echo
+			printf "Password: "
+			read SIGNING_PASSWORD
+			stty echo
+			printf "\n"
+		fi
 		log "Packaging started."
 		"$REPO_SCRIPTS_DIR/package.sh" || error_exit "Failed to package."
 		if [ "$BUILD_OS" = "mac" ] ; then

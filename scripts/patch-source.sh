@@ -74,10 +74,8 @@ log "Patching installer"
 
 package_manifest="$FF_SOURCE_DIR/browser/installer/package-manifest.in"
 echo '[sqlite-writer]'                          >> "$package_manifest"
-if [[ ! "$BUILD_OS" = "windows" ]] ; then
-	echo '@BINPATH@/sqlite-writer'          >> "$package_manifest"
-fi
 if [[ "$BUILD_OS" = "linux" ]] ; then
+	echo '@BINPATH@/sqlite-writer'          >> "$package_manifest"
 	echo '@BINPATH@/sqlite-writer.desktop'  >> "$package_manifest"
 fi
 echo '@RESPATH@/apps/*'                           >> "$package_manifest"

@@ -11,6 +11,10 @@ import os
 import sys
 
 
+def print_flush(s):
+    print(s)
+    sys.stdout.flush()
+
 def make_dmg(source_directory, output_dmg):
     build = MozbuildObject.from_environment()
     extra_files = [
@@ -22,17 +26,23 @@ def make_dmg(source_directory, output_dmg):
     ]
     volume_name = build.substs['MOZ_APP_DISPLAYNAME']
     need_signing = [
+        'SQLiteWriter.app/Contents/MacOS/crashreporter.app/Contents/MacOS/minidump-analyzer',
+        'SQLiteWriter.app/Contents/MacOS/crashreporter.app',
         'SQLiteWriter.app/Contents/MacOS/plugin-container.app',
-        'SQLiteWriter.app/Contents/MacOS/sqlite-writer-bin',
-        'SQLiteWriter.app/Contents/MacOS/pingsender',
         'SQLiteWriter.app/Contents/MacOS/*.dylib',
+        'SQLiteWriter.app/Contents/MacOS/pingsender',
         'SQLiteWriter.app/Contents/MacOS/XUL',
+        'SQLiteWriter.app/Contents/MacOS/sqlite-writer-bin',
         'SQLiteWriter.app',
     ]
+    print_flush('Unlocking keychain for signing ...')
+    os.system('security unlock-keychain -p "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
+    os.system('security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
+    os.system('security set-keychain-settings "$HOME/Library/Keychains/login.keychain-db"')
     for rel_path in need_signing:
-        print('Signing ' + rel_path + ' ...')
+        print_flush('Signing ' + rel_path + ' ...')
         abs_path = os.path.join(os.getcwd(), source_directory, rel_path)
-        os.system('codesign --force --sign - --entitlements $ENTITLEMENTS_PATH ' + abs_path)
+        os.system('codesign --force --sign "$SIGNING_IDENTITY" --entitlements "$SIGNING_ENTITLEMENTS" ' + abs_path)
     dmg.create_dmg(source_directory, output_dmg, volume_name, extra_files)
 
 
