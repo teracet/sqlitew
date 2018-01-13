@@ -163,3 +163,18 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	new_line='MOZ_MACBUNDLE_ID=`echo $MOZ_APP_DISPLAYNAME | '$new_transform'`'
 	sedi "s/$src_line/$new_line/" "$FF_SOURCE_DIR/old-configure.in"
 fi
+
+
+if [[ "$BUILD_OS" = "mac" ]] ; then
+	log "Patching extra bundle indentifiers"
+
+	old_id='org.mozilla.crashreporter'
+	new_id='com.teracet.sqlite-writer.crashreporter'
+	file="$FF_SOURCE_DIR/toolkit/crashreporter/client/macbuild/Contents/Info.plist"
+	sedi "s/$old_id/$new_id/" "$file"
+
+	old_id='org.mozilla.plugincontainer'
+	new_id='com.teracet.sqlite-writer.plugincontainer'
+	file="$FF_SOURCE_DIR/ipc/app/macbuild/Contents/Info.plist.in"
+	sedi "s/$old_id/$new_id/" "$file"
+fi
