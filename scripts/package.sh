@@ -26,6 +26,15 @@ case "$BUILD_OS" in
 		cd "$FF_SOURCE_DIR"
 		./mach package | tee "$REPO_BUILD_DIR/package.log"
 		cp "$FF_DIST_DIR/sqlite-writer-bin-$SW_VERSION.en-US.mac.dmg" "$REPO_BUILD_DIR/SQLite Writer $SW_VERSION.dmg"
+
+		log "Building .pkg for app store"
+		keychain="$HOME/Library/Keychains/login.keychain-db"
+		src="$FF_DIST_DIR/sqlite-writer-bin/SQLiteWriter.app"
+		dest="$REPO_BUILD_DIR/SQLite Writer $SW_VERSION.pkg"
+		security unlock-keychain -p "$SIGNING_PASSWORD" "$keychain"
+		security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$SIGNING_PASSWORD" "$keychain"
+		security set-keychain-settings "$keychain"
+		productbuild --sign "$SIGNING_IDENTITY_I" --component "$src" '/Applications' "$dest"
 		;;
 
 	windows)

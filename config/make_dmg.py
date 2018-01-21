@@ -25,6 +25,15 @@ def make_dmg(source_directory, output_dmg):
          '.VolumeIcon.icns'),
     ]
     volume_name = build.substs['MOZ_APP_DISPLAYNAME']
+
+    print_flush('Removing extended file attributes ...')
+    os.system('xattr -cr SQLiteWriter.app')
+
+    print_flush('Unlocking keychain for signing ...')
+    os.system('security unlock-keychain -p "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
+    os.system('security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
+    os.system('security set-keychain-settings "$HOME/Library/Keychains/login.keychain-db"')
+
     need_signing = [
         'SQLiteWriter.app/Contents/MacOS/crashreporter.app/Contents/MacOS/minidump-analyzer',
         'SQLiteWriter.app/Contents/MacOS/crashreporter.app',
@@ -36,23 +45,18 @@ def make_dmg(source_directory, output_dmg):
         'SQLiteWriter.app/Contents/Resources/gmp-clearkey/0.1/libclearkey.dylib',
         'SQLiteWriter.app',
     ]
-    print_flush('Removing extended file attributes ...')
-    os.system('xattr -cr SQLiteWriter.app')
-    print_flush('Unlocking keychain for signing ...')
-    os.system('security unlock-keychain -p "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
-    os.system('security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$SIGNING_PASSWORD" "$HOME/Library/Keychains/login.keychain-db"')
-    os.system('security set-keychain-settings "$HOME/Library/Keychains/login.keychain-db"')
     for rel_path in need_signing:
         print_flush('Signing ' + rel_path + ' ...')
         abs_path = os.path.join(os.getcwd(), source_directory, rel_path)
         os.system('codesign --force --sign "$SIGNING_IDENTITY_A" --entitlements "$SIGNING_ENTITLEMENTS" --requirements "=designated => anchor apple generic" ' + abs_path)
+
     print_flush('Testing signing...')
     os.system('codesign -vvvv ' + os.path.join(os.getcwd(), source_directory, 'SQLiteWriter.app'))
-    print_flush('Removing extended file attributes again ...')
-    os.system('xattr -cr SQLiteWriter.app')
+
     print_flush('Testing attributes...')
     os.system('xattr -cr SQLiteWriter.app')
     print_flush('(done testing attributes)')
+
     dmg.create_dmg(source_directory, output_dmg, volume_name, extra_files)
 
 
