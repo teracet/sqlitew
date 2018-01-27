@@ -178,3 +178,29 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 	file="$FF_SOURCE_DIR/ipc/app/macbuild/Contents/Info.plist.in"
 	sedi "s/$old_id/$new_id/" "$file"
 fi
+
+if [[ "$BUILD_OS" = "mac" ]] ; then
+	log "Disabling private API usage disliked by Apple"
+
+	# Disable CGSSetDebugOptions
+	line='^\(.*CGSSetDebugOptions.*\)$'
+	file="$FF_SOURCE_DIR/dom/plugins/ipc/PluginProcessChild.cpp"
+	sedi "s/$line/\/\/\1/" "$file"
+	file="$FF_SOURCE_DIR/widget/cocoa/nsAppShell.mm"
+	sedi "s/$line/\/\/\1/" "$file"
+
+	# Disable CGSSetWindowBackgroundBlurRadius
+	line='^\(.*CGSSetWindowBackgroundBlurRadius.*\)$'
+	file="$FF_SOURCE_DIR/widget/cocoa/nsCocoaWindow.mm"
+	sedi "s/$line/\/\/\1/" "$file"
+
+	# Disable NSTextInputReplacementRangeAttributeName
+	line='^\(.*NSTextInputReplacementRangeAttributeName.*\)$'
+	file="$FF_SOURCE_DIR/widget/cocoa/TextInputHandler.mm"
+	sedi "s/$line/\/\/\1/" "$file"
+
+	# Disable malloc_logger
+	line='^\(.* malloc_logger.*\)$' # preceding space is intentional
+	file="$FF_SOURCE_DIR/mozglue/misc/StackWalk.cpp"
+	sedi "s/$line/\/\/\1/" "$file"
+fi
