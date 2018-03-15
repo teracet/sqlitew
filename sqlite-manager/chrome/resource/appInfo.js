@@ -5,7 +5,7 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-var extId = "sqlite-writer@teracet.com";
+var extId = "SQLiteWriter@teracet.com";
 
 var SmAppInfo = {
   appInfo: Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo),
