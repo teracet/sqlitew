@@ -44,6 +44,11 @@ cp -R "$SM_SOURCE_DIR/"* "$sm_cp_dir"
 # Patch version.
 
 sedi "s/extVersion: \"x\.x\.x\"/extVersion: \"$SW_VERSION\"/" "$sm_cp_dir/chrome/resource/appInfo.js"
+sedi "s/^Version=.*$/Version=$SW_VERSION/" "$sm_cp_dir/application.ini"
+
+# Patch build id.
+
+sedi "s/^BuildID=.*$/BuildID=$BUILD_ID/" "$sm_cp_dir/application.ini"
 
 
 # Install launcher (if necessary).

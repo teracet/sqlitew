@@ -3,6 +3,8 @@ set -euo pipefail
 
 # Variables:
 #   REPO_DIR               Absolute path to root of repo.
+#   BUILD_ID               Unique ID generated from date/time for each build
+#                           (default: YYYYMMDDhhmmss).
 #   BUILD_OS               OS to build for (note that manually overriding this
 #                           will not affect the Mozilla build system, and is
 #                           untested; this variable is meant to provide
@@ -40,6 +42,7 @@ set -euo pipefail
 export REPO_DIR="${REPO_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
 export BUILD_OS="${BUILD_OS:-`$REPO_SCRIPTS_DIR/detect-os.sh`}"
+export BUILD_ID="${BUILD_ID:-`date '+%Y%m%d%H%M%S'`}"
 export FF_SOURCE_DIR="${FF_SOURCE_DIR:-$REPO_DIR/build/source}"
 export FF_DIST_DIR="${FF_DIST_DIR:-$FF_SOURCE_DIR/obj-sqlite-writer/dist}"
 export FF_VERSION="${FF_VERSION:-54.0.1}"
