@@ -2,6 +2,35 @@ Components.utils.import("resource://sqlitemanager/sqlite.js");
 Components.utils.import("resource://sqlitemanager/tokenize.js");
 Components.utils.import("resource://sqlitemanager/appInfo.js");
 
+// File IO ref: https://developer.mozilla.org/en-US/docs/Archive/Add-ons/Code_snippets/File_I_O
+// Cmd args ref: https://stackoverflow.com/questions/36927096/firefox-command-line-arguments-in-extension
+
+Components.utils.import('resource://gre/modules/NetUtil.jsm');
+Components.utils.import('resource://gre/modules/FileUtils.jsm');
+
+Components.utils.import('resource://gre/modules/osfile.jsm');
+Components.utils.import('resource://gre/modules/ctypes.jsm');
+
+function getCmdLineArgs(cb) {
+  var file = new FileUtils.File('/proc/self/cmdline');
+  NetUtil.asyncFetch(file, function(istream, status) {
+    if (!Components.isSuccessCode(status)) {
+      cb(null, 'failed to read cmdline args');
+    }    
+    var data = NetUtil.readInputStreamToString(istream, istream.available());
+
+    // Args are null separated
+    var args = data.split('\u0000');
+
+    // First three are firefox-bin, '--app', and application.ini loc
+    //args = args.slice(3);
+
+    // Last is empty (because the string is null-terminated)
+    //args.pop();
+    cb(args);
+  });
+}
+
 // SQLiteManager extension
 SmGlobals.disableChrome();
 
@@ -145,8 +174,9 @@ var SQLiteManager = {
     //2. extension: open last db
 
     var bOpenLastDb = true;
+    // DISABLED in favor of patch below
     //proceed to check commandline arguments only if we are in an xulrunner app
-    if(SmAppInfo.appInfo.name == 'sqlite-manager') {
+    /*if(SmAppInfo.appInfo.name == 'sqlite-manager') {
       if (window.arguments) {
         //commandline arguments if running with xulrunner
         try {
@@ -164,15 +194,38 @@ var SQLiteManager = {
           sm_log('Command line error: ' + e.message);
         }
       }
-    }
+    }*/
+
+    // PATCH for SQLite Writer: open files supplied by commandline arguments
+    var self = this;
+    getCmdLineArgs(function(args, err) {
+      // Find the -f arg
+      var fArg = null;
+      for (var i = 0; i < args.length; ++i) {
+        if (args[i] === '-f' && i + 1 < args.length) {
+          fArg = args[i + 1];
+          break;
+        }
+      }
+
+      // Load the database
+      if (fArg) {
+        bOpenLastDb = false;
+        var file = new FileUtils.File(fArg);
+        self.setDatabase(file);
+        if (!self.mDb.isConnected()) {
+          alert('Failed to connect to ' + file.path);
+        }
+      } else {
+        //try opening the last db
+        if (bOpenLastDb)
+          this.openLastDb();
+
+        //load the previously opened tab
+        this.loadTabWithId(this.getSelectedTabId());
+      }
+    });
 ///////////////////////////////////////////////////////////////
-
-    //try opening the last db
-    if (bOpenLastDb)
-      this.openLastDb();
-
-    //load the previously opened tab
-    this.loadTabWithId(this.getSelectedTabId());
     return;
   },
 
