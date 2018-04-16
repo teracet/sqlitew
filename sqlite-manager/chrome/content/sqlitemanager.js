@@ -2281,12 +2281,16 @@ var SQLiteManager = {
             .directoryEntries;
     if (sType == "user") {
       sSelectString = sm_getLStr("selectDbInDefaultDir");
+      // DISABLED because it causes on error on launch that halts init
+      /*
       //Read from prefs
       var value = sm_prefsBranch.getComplexValue("userDir",Ci.nsIRelativeFilePref);
       // |value.file| is the file.
       sTooltip = value.file.path;
       var lFile = value.file;
       fileList = lFile.directoryEntries;
+      */
+      fileList = { hasMoreElements: function() { return false; } }; // <-- PATCH
     }
     //get the node for the popup menus to show profile db list
     var listbox = $$("listbox-profileDB");
