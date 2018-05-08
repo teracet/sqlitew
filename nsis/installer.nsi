@@ -366,6 +366,14 @@ Section "-Application" APP_IDX
   ; it doesn't cause problems always add them.
   ${SetUninstallKeys}
 
+  ;; SQLITE WRITER: install file extension handlers
+  ${GetLongPath} "$INSTDIR\${FileMainEXE}" $8
+  StrCpy $2 "$\"$8$\" -url $\"%1$\""
+  StrCpy $3 "SQLiteWriterFile-$AppUserModelID"
+  ${AddDisabledDDEHandlerValues} "$3" "$2" "$8,1" "${AppRegName} File" ""
+  ${AddAssociationIfNoneExist} ".db" "$3"
+  ${AddAssociationIfNoneExist} ".sqlite" "$3"
+
 !ifdef MOZ_MAINTENANCE_SERVICE
   ; If the maintenance service page was displayed then a value was already
   ; explicitly selected for installing the maintenance service and
