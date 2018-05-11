@@ -8,4 +8,4 @@ ICON_PATH="$APP_DIR/icons/mozicon128.png"
 sed -i -e "s|^Icon=$|Icon=$ICON_PATH|" "$ROOT_DIR/sqlite-writer.desktop"
 
 # Launch the app
-"$ROOT_DIR/sqlite-writer-bin" --app "$APP_DIR/application.ini"
+"$ROOT_DIR/sqlite-writer-bin" --app "$APP_DIR/application.ini" $@

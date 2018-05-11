@@ -196,26 +196,20 @@ var SQLiteManager = {
     }
     
     // Try both -url and -f parameters
-    var handledFileArg = false;
-    var handleTryCount = 0;
-    getCmdLineArg(window, 'url', function (fileUrl) {
-      handleTryCount++;
-      if (handledFileArg)
-        return;
-      if (!fileUrl && handleTryCount < 2)
-        return;
-      handledFileArg = true;
-      var fileArg = fileUrl ? fileUrl.substring('file://'.length) : null;
-      handleFileArg(fileArg);
+    var tryCount = 0;
+    var fileArg;
+    getCmdLineArg(window, 'url', function (url) {
+      var arg = url ? url.substring('file://'.length) : null;
+      fileArg = fileArg || arg;
+      if (++tryCount === 2) {
+        handleFileArg(fileArg);
+      }
     });
-    getCmdLineArg(window, 'f', function (fileArg) {
-      handleTryCount++;
-      if (handledFileArg)
-        return;
-      if (!fileArg && handleTryCount < 2)
-        return;
-      handledFileArg = true;
-      handleFileArg(fileArg);
+    getCmdLineArg(window, 'f', function (arg) {
+      fileArg = fileArg || arg;
+      if (++tryCount === 2) {
+        handleFileArg(fileArg);
+      }
     });
 ///////////////////////////////////////////////////////////////
     return;
