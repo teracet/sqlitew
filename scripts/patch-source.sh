@@ -165,6 +165,11 @@ if [[ "$BUILD_OS" = "mac" ]] ; then
 fi
 
 
+log "Patching app runner"
+
+sedi 's/if (!newInstance)/if (false)/' "$FF_SOURCE_DIR/toolkit/xre/nsAppRunner.cpp"
+
+
 if [[ "$BUILD_OS" = "mac" ]] ; then
 	log "Patching extra bundle indentifiers"
 
